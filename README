@@ -1,0 +1,38 @@
+ABOUT VTONF:
+
+	Vtonf  is a Virtual private Server (VPS) control panel. It is designed to help 
+	you to manage your VPS server running on OpenVZ  virtualization technology.
+
+INSTALLATION:
+
+	To know about the installation procedures please read the file " INSTALL".
+
+FOUNDATION:
+
+	The  VTONF is promoted by Bobcares , <http://bobcares.com/>. Please see more about
+	foundation at  < http://www.vtonf.com/foundation.html >
+
+DOCUMENTATION:
+
+	The complete  VTONF documentation is available in   the wiki,  < http://www.wiki.vtonf.com/ >.
+   
+SUPPORT:
+
+	The VTONF project is supported by Bobcares. Please  read more about technical support
+	at < http://www.vtonf.com/support.html >
+     
+LAST  UPDATE:
+
+	The last update on January 12th, 2008
+       
+COPY RIGHT:
+
+	The VTONF is released under GPL License. Please  read  the file LICENSE  or visit the url
+	< http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt >  
+CHANGELOG:
+
+  For version 1.0-beta1 :
+	- The   vtonf-plan bug fix on  128 MB plan.
+	- The df bug fix  for LVM  servers. 
+	- Feed back  system to know the status of installer.
+	
