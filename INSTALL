@@ -1,0 +1,40 @@
+################################  The VTONF installation procedures ##############################
+
+Requirements:
+1)Server Requirements:
+        a) The server must be a 32-bit  GNU/Linux server having operating system Centos 4.5 or higher.
+        b) The server  must be an OpenVZ server, http://openvz.org/
+	c) A hard disk partition mounted on /vz
+        
+2)Client Requirements:
+	a) You may need Mozilla firefox web browser 1.5 or higher.
+
+Upgrade VTONF:
+
+To upgrade the vtonf use the following command 
+
+	# ./upgrade
+
+For a new installation please read the following.
+
+Installation :
+
+	i) Download the latest installer  of tar file vtonfinstaller.X.X.X.tar.gz , where X.X.X is the version
+    	ii) Decompress the tar file
+		# tar -xvzf vtonfinstaller.X.X.X.tar.gz
+	iii) Change the directory
+		# cd vtonfinstaller.X.X.X/
+	iv) Now execure it as follows 
+		# ./install
+
+DOCUMENTATION:
+
+        http://www.wiki.vtonf.com/
+
+SUPPORTED By :
+        http://bobcares.com/
+
+
+Report Bugs:
+        httpL://bugzilla.vtonf.com/
+
