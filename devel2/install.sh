@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo "This is the install script for fosvm";
+echo "This is the install script for vzvirtpanel";
 echo "It will take you step by step through the installation process";
 read -p "Enter mysql user: " msus ;
 read -p "Enter mysql password: " mspw ;
