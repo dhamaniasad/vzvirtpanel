@@ -1,0 +1,734 @@
+ru:
+  language:
+    title: "Русский"
+  form:
+    loading: "Пожалуйста, подождите..."
+    confirmation: "Подтверждение"
+    performing_task: "Пожалуйста, подождите. Выполнение задачи..."
+    error:
+      title: "Ошибка"
+      fill_form: "Пожалуйста, заполните форму."
+    info:
+      title: "Информация"
+    button:
+      save: "Сохранить"
+      cancel: "Отмена"
+      create: "Создать"
+      back: "Назад"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "Пароль и подтверждение не совпадают."
+              too_short: "Пароль слишком короткий (минимум символов: {{count}})."
+            password_confirmation:
+              blank: "Необходимо подтверждение пароля."
+            login:
+              taken: "Пользователь с таким логином уже существует."
+              too_short: "Логин слишком короткий (минимум символов: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Сервер с таким именем уже присутствует."
+              connection: "Не удалось подключиться. Возможно демон не запущен."
+              ssh_connection: "Не удалось установить SSH соединение."
+              openvz_not_found: "OpenVZ виртуализация не найдена на сервере."
+              ruby_not_found: "Ruby интерпретатор не найден на сервере."
+            auth_key:
+              bad_auth: "Невозможно выполнить авторизацию. Возможно неверный ключ авторизации."
+            daemon_port:
+              not_a_number: "Неверный номер порта."
+              greater_than: "Номер порта должен быть больше {{count}}."
+              less_than: "Номер порта должен быть меньше {{count}}."
+            root_password:
+              ssh_bad_auth: "Не удалось выполнить SSH авторизацию."
+              empty: "Это поле обязательно для заполнения."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Неверный IP адрес."
+              taken: "IP адрес уже присвоен другому серверу."
+              not_found_in_pool: "IP адрес не найден в доступных IP пулах."
+            identity:
+              taken: "Такой идентификатор уже принадлежит другому серверу."
+            password:
+              confirmation: "Пароль и его подтверждение не совпадают."
+            nameserver:
+              invalid: "Неверный IP-адрес DNS-сервера."
+            host_name:
+              invalid: "Неверное имя хоста."
+            search_domain:
+              invalid: "Неверные домены для поиска."
+            description:
+              invalid: "Описание содержит недопустимые символы."
+        server_template:
+          attributes:
+            name:
+              taken: "Шаблон сервера с таким именем уже существует."
+        role:
+          attributes:
+            name:
+              taken: "Роль с таким именем уже существует."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Неверный IP адрес."
+              bad_range: "Неверный диапазон IP адресов."
+            last_ip:
+              invalid: "Неверный IP адрес."
+  api:
+    error:
+      access_denied: "Доступ запрещен."
+      object_not_found: "Объект не найден."
+      unknown_error: "Неизвестная ошибка."
+      internal_error: "Внутренняя ошибка."
+  about:
+    copyright: "Авторское право 2008-2013 SoftUnity."
+    right_reserved: "Все права зарезервированы."
+    about_program: "О программе"
+    author: "Главный разработчик"
+    contributors: "Участники"
+    contributors_list: "список"
+    web_site: "Веб-сайт"
+  login:
+    page_title: "Вход"
+    window_title: "Вход в {{product}}"
+    username: "Логин"
+    password: "Пароль"
+    remember_me: "Запомнить"
+    button_login: "Вход"
+    button_restore_password: "Восстановление пароля"
+    locale: "Язык"
+    bad_login: "Неверный логин или пароль."
+    locked_user: "Пользователь заблокирован."
+    ip_restricted: "Ограничение по IP-адресу."
+  restore_password:
+    page_title: "Восстановление пароля"
+    window_title: "Восстановление пароля"
+    username: "Логин"
+    button_restore: "Восстановить"
+    restore_link_sent: "Письмо с инструкциями по восстановлению пароля было отправлено."
+    error:
+      user_not_found: "Пользователь не найден."
+      no_email: "Невозможно восстановить пароль, потому что пользователь не имеет email-адреса."
+    mail:
+      restore_link:
+        subject: "Восстановление пароля"
+        body: "Для восстановления пароля проследуйте по ссылке: {{link}}"
+  reset_password:
+    page_title: "Сброс пароля"
+    window_title: "Сброс пароля"
+    new_password: "Новый пароль"
+    confirm_password: "Подтверждение пароля"
+    password_changed: "Пароль был изменен."
+  admin:
+    menu:
+      title: "Меню"  
+      general:
+        title: "Общее"
+        dashboard: "Рабочий стол"
+        hardware_servers: "Физические серверы"
+        ip_addresses: "IP адреса"
+        virtual_servers: "Виртуальные серверы"
+        my_profile: "Мой профиль"
+        users: "Пользователи"
+        requests: "Запросы"
+        tasks: "Задачи"
+        event_log: "Журнал событий"
+        logout: "Выход" 
+      help:
+        title: "Помощь"
+        documentation: "Документация"
+        support: "Тех. поддержка"
+    operations:
+      up_level: "Вверх"
+      search: "Поиск"
+    logout: "Вы действительно хотите выйти?"
+    search:
+      form:
+        title: "Поиск"
+        field:
+          query: "Запрос"
+        button:
+          search: "Искать"
+    my_profile:
+      title: "Мой профиль"
+      user_name: "Логин"
+      current_password: "Текущий пароль"
+      new_password: "Новый пароль"
+      confirm_password: "Подтверждение пароля"
+      bad_current_password: "Неверный текущий пароль."
+      contact_name: "Контактное имя"
+      email: "E-mail"
+    events:
+      internal_error: "Внутренная ошибка: {{message}}"
+      hardware_server:
+        connect: "Физический сервер {{host}} был подключен."
+        disconnect: "Физический сервер {{host}} был отключен."
+        sync: "Состояние сервера {{host}} было синхронизировано."
+        sync_failed: "Не удалось синхронизировать состояние сервера {{host}}."
+        reboot: "Перезагрузка сервера {{host}}."
+      virtual_server:
+        created: "Виртуальный сервер {{identity}} был создан."
+        removed: "Виртуальный сервер {{identity}} был удален."
+        change_state_failed: "Не удалось изменить состояние виртуального сервера {{identity}}; состояние: {{state}}; код: {{code}}."
+        updated: "Настройки для виртуального сервера {{identity}} были обновлены."
+        cloned: "Виртуальный сервер {{identity}} был клонирован."
+        counter_reached: "Достигнут лимит {{name}} для виртуального сервера {{identity}} на физическом сервере {{host}}."
+      user:
+        login:
+          ok: "Пользователь {{login}} вошел в панель."
+          bad_password: "Попытка пользователя {{login}} войти с неверным паролем."
+          bad_login: "Попытка войти под неизвестным логином."
+          locked_user: "Заблокированный пользователь {{login}} попытался войти в панель."
+          ip_restricted: "Ограничение по IP-адресу для пользователя с логином {{login}}."
+        logout: "Пользователь {{login}} вышел из панели."
+        removed: "Пользователь {{login}} был удален."
+        enabled: "Пользователь {{login}} был разблокирован."
+        disabled: "Пользователь {{login}} был заблокирован."
+        created: "Пользователь {{login}} был создан."
+        updated: "Пользователь {{login}} был обновлен."
+        profile_updated: "Профиль пользователя {{login}} был обновлен."
+      role:
+        removed: "Роль {{name}} была удалена."
+        created: "Роль {{name}} была создана."
+        updated: "Роль {{name}} была обновлена."
+      request:
+        created: "Запрос #{{id}} был создан."
+        updated: "Запрос #{{id}} был обновлен."
+        removed: "Запрос #{{id}} был удален."
+      comment:
+        created: "Комментарий на запрос #{{request_id}} был создан."
+    tasks:
+      os_templates:
+        install: "Установка шаблонов ОС на сервер {{host}}."
+      backups:
+        create: "Резерное копирование виртуального сервера #{{identity}} на физическом сервере {{host}}."
+        restore: "Восстановление виртуального сервера #{{identity}} на физическом сервере {{host}}."
+    dashboard:
+      title: "Рабочий стол"
+      intro:
+        title: "Введение"
+        text: "OpenVZ Web Panel - это панель для управления серверами на технологии виртуализации OpenVZ."
+      profile:
+        title: "Профиль"
+        text: "Вы вошли как пользователь {{login}}."
+      updates:
+        text: "Новая версия доступна: {{product}}."
+        update_command: "Для обновления необходимо выполнить команду: {{command}}"
+      stats_grid:
+        title: "Статистика"
+        column:
+          parameter: "Параметр"
+          value: "Значение"
+        parameter:
+          panel_users: "Пользователи панели"
+          hardware_servers: "Физические сервера"
+          virtual_servers: "Виртуальные сервера"
+          virtual_servers_running: "Запущенные виртуальные сервера"
+          virtual_servers_stopped: "Остановленные виртуальные сервера"
+          virtual_servers_expired: "Виртуальные сервера на отключение"
+          opened_requests: "Открытых запросов"
+    hardware_servers:
+      title: "Физические сервера"
+      grid:
+        title: "Список физических серверов"
+        column:
+          host_name: "Имя хоста"
+          description: "Описание"
+          virtual_servers: "Виртуальные сервера"
+        button:
+          connect: "Подключить новый сервер"
+          reconnect: "Переподключить сервер"
+          disconnect: "Отключить сервер"
+          details: "Детали"
+          sync: "Синхронизация"
+          edit: "Изменить настройки"
+          reboot: "Перезагрузка"
+      form:
+        connect_server:
+          title: "Подключить новый физический сервер"
+          edit_title: "Изменить настройки физического сервера"
+          button_connect: "Подключить"
+          field:
+            host_name: "Имя хоста"
+            auth_key: "Ключ авторизации"
+            description: "Описание"
+            daemon_port: "Порт сервиса"
+            root_password: "Пароль root'а"
+            use_ssl: "Использовать SSL"
+          fieldset:
+            additional_settings: "Дополнительные настройки"
+        disconnect_server:
+          sure_to_disconnect: "Вы действительно хотите отключить выбранные сервера?"
+          deletion_failed: "Во время отключения произошла ошибка."
+        sync:
+          sync_failed: "Не удалось синхронизировать информацию на некоторых физических серверах."
+        reboot_server:
+          sure_to_reboot: "Выбранные серверы будут недоступны во время перезагрузки. Вы действительно хотите их перезагрузить?"
+          reboot_failed: "Не удалось начать перезагрузку на некоторых серверах."
+      show:
+        title: "Физический сервер {{name}}"
+      top_toolbar:
+        os_templates: "Шаблоны ОС"
+        server_templates: "Шаблоны серверов"
+      stats:
+        title: "Статистика физического сервера"
+        column:
+          parameter: "Параметр"
+          value: "Значение"
+        field:
+          os_version: "Версия ОС"
+          cpu_load_average: "Средняя загрузка CPU"
+          disk_usage: "Использование диска, раздел {{partition}}"
+          memory_usage: "Использование памяти"
+        value:
+          disk_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+          memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+    virtual_servers:
+      title: "Виртуальные сервера"
+      limits:
+        unlimited: "неограничено"
+      grid:
+        title: "Список виртуальных серверов"
+        column:
+          state: "Статус"
+          identity: "VEID"
+          ip_address: "IP адрес"
+          host_name: "Имя хоста"
+          os_template: "Шаблон ОС"
+          memory: "Память, Мб"
+          diskspace: "Диск, Мб"
+          expiration_date: "Дата отключения"
+          owner: "Владелец"
+          description: "Описание"
+        button:
+          create: "Создать виртуальный сервер"
+          destroy: "Удалить виртуальный сервер"
+          change_state: "Изменить состояние"
+          start: "Старт"
+          restart: "Рестарт"
+          stop: "Стоп"
+          edit: "Изменить настройки"
+          limits: "Ограничения"
+          reinstall: "Переустановка"
+          clone: "Клонирование"
+          change_settings: "Изменить настройки"
+          console: "Консоль"
+          backup: "Резервное копирование"
+          tools: "Инструменты"
+          migrate: "Миграция"
+          create_template: "Создать шаблон"
+      form:
+        change_settings:
+          title: "Изменить настройки виртуального сервера"
+        reinstall:
+          title: "Переустановить виртуальный сервер"
+          button:
+            reinstall: "Переустановить"
+        change_state:
+          failed: "Невозможно изменить состояние виртуального сервера."
+        remove_server:
+          sure_to_remove: "Вы действительно хотите удалить выбранные виртуальные сервера?"
+          deletion_failed: "Не удалось удалить некоторые виртуальные сервера."
+        create_server:
+          title: "Создать новый виртуальный сервер"
+          edit_title: "Изменить настройки виртуального сервера"
+          button_create: "Создать"
+          field:
+            identity: "ID сервера (VEID)"
+            os_template: "Шаблон ОС"
+            select_os_template: "Выберите шаблон ОС"
+            ip_address: "IP адрес"
+            host_name: "Имя хоста"
+            password: "Пароль root'а"
+            confirm_password: "Подтверждение пароля"
+            start_on_boot: "Запуск после загрузки"
+            start_after_creation: "Запуск после создания"
+            nameserver: "DNS сервер"
+            search_domain: "Домен для поиска"
+            diskspace: "Размер диска, Mb"
+            memory: "RAM память, Mb"
+            vswap: "Своп, Mb"
+            status: "Статус"
+            owner: "Владелец"
+            select_owner: "Выберите владельца"
+            no_owner: "Нет владельца"
+            server_template: "Шаблон сервера"
+            select_server_template: "Выберите шаблон сервера"
+            description: "Описание"
+            cpu_units: "CPU единиц"
+            cpus: "Количество CPU"
+            cpu_limit: "CPU лимит, %"
+            expiration_date: "Дата отключения"
+            daily_backup: "Ежедневный бэкап"
+          fieldset:
+            general: "Общее"
+            network: "Сеть"
+            system_access: "Доступ к системе"
+            misc: "Разное"
+            dns_settings: "DNS настройки"
+            limits: "Ограничения"
+          tab:
+            main_settings: "Основные настройки"
+            additional_settings: "Дополнительные настройки"
+        create_template:
+          title: "Создать шаблон на основе виртуального сервера"
+          button_create: "Создать"
+          field:
+            name: "Имя"
+          error:
+            invalid_name: "Только цифры и английские буквы допустимы."
+            template_exists: "Шаблон OS с таким именен уже существует."
+        limits:
+          title: "Ограничения"
+          grid:
+            column:
+              name: "Имя"
+              soft_limit: "Барьер"
+              hard_limit: "Лимит"
+        console:
+          title: "Консоль"
+          error:
+            code: "Код возврата:"
+            output: "Вывод:"
+          field:
+            command: "Команда"
+          button:
+            run: "Выполнить"
+        clone:
+          title: "Клонировать виртуальный сервер"
+        migrate:
+          title: "Мигрировать виртуальный сервер"
+          field:
+            target: "Целевой сервер"
+          button_migrate: "Мигрировать"
+          note: "До миграции необходимо сгенерировать публичный ключ SSH для пользователя root на исходном физическом сервере и скопировать его на целевой физический сервер. Также необходимо установить утилиту rsync на целевом физическом сервере."
+      show:
+        title: "Виртуальный сервер {{name}}"
+        grid:
+          title: "Информация о виртуальном сервере"
+          column:
+            parameter: "Параметр"
+            value: "Значение"
+      stats:
+        title: "Статистика виртуального сервера"
+        field:
+          cpu_load_average: "Средняя загрузка CPU"
+          disk_usage: "Использование диска"
+          memory_usage: "Использование памяти"
+        value:
+          disk_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+          memory_usage: "{{percent}}%, {{used}} из {{total}} / {{free}} свободно"
+        button:
+          stat_details: "Детали"
+      stat_details:
+        title: "Статистика виртуального сервера {{name}}"
+        grid:
+          title: "Ограничения виртуального сервера"
+          column:
+            parameter: "Параметр"
+            current: "Текущее использование"
+            max: "Макс. использование"
+            barrier: "Барьер"
+            limit: "Лимит"
+            failcnt: "Отказы"
+        chart:
+          cpu_usage:
+            title: "Использование процессора"
+          ram_usage:
+            title: "Использование памяти"
+          disk_usage:
+            title: "Использование диска"
+    os_templates:
+      title: "Шаблоны ОС на физическом сервере {{name}}"
+      grid:
+        title: "Установленные шаблоны OС"
+        column:
+          name: "Имя"
+          size: "Размер, Мб"
+          virtual_servers: "Серверы"
+        button:
+          install_new_template: "Установить новый шаблон ОС"
+          remove: "Удалить шаблон ОС"
+      form:
+        install:
+          title: "Установка нового шаблона ОС"
+          tab:
+            official: "Официальные"
+            contributed: "Пользовательские"
+            url: "URL"
+          button_install: "Установить"
+          load_failed: "Не удалось загрузить список шаблонов ОС."
+          failed: "Невозможно начать установку шаблонов ОС."
+          scheduled: "Инсталляция шаблонов ОС запланирована. Новые шаблоны появятся по прошествии некоторого времени."
+          field:
+            url: "URL шаблона"
+          invalid_url: "Введите правильный URL архива шаблона ОС."
+        remove_template:
+          sure_to_remove: "Вы действительно хотите удалить выбранные шаблоны ОС?"
+          deletion_failed: "Не удалось удалить некоторые шаблоны ОС."
+    event_log:
+      title: "Журнал событий"
+      grid:
+        title: "Последние события"
+        column:
+          level: "Статус"
+          created_at: "Дата"
+          ip_address: "IP адрес"
+          message: "Сообщение"
+          id: "ID"
+        button:
+          clear: "Очистить журнал"
+      form:
+        clear:
+          sure_to_clear: "Вы действительно хотите удалить все записи?"
+          clear_failed: "Не удалось очистить журнал."
+    users:
+      role:
+        infrastructure_admin: "Администратор инфраструктуры"
+        virtual_server_owner: "Владелец виртуального сервера"
+      title: "Пользователи"
+      top_toolbar:
+        roles: "Роли"
+      grid:
+        title: "Список пользователей"
+        column:
+          enabled: "Статус"
+          login: "Логин"
+          created_at: "Дата создания"
+          role: "Роль"
+          contact_name: "Контактное имя"
+          email: "E-mail"
+        button:
+          add: "Добавить пользователя"
+          remove: "Удалить пользователя"
+          edit: "Редактировать пользователя"
+          enable: "Разблокировать"
+          disable: "Заблокировать"
+      form:
+        remove_user:
+          sure_to_remove: "Вы действительно хотите удалить выбранных пользователей?"
+          deletion_failed: "Не удалось удалить некоторых пользователей."
+        create:
+          title: "Создание нового пользователя"
+          edit_title: "Редактирование пользователя"
+          button_create: "Создать"
+          field:
+            login: "Логин"
+            password: "Пароль"
+            confirm_password: "Подтверждение пароля"
+            role: "Роль"
+            select_role: "Выберите роль"
+            contact_name: "Контактное имя"
+            email: "E-mail"
+    task:
+      title: "Задачи"
+      grid:
+        title: "Список задач"
+        column:
+          status: "Статус"
+          id: "ID"
+          description: "Описание"
+    server_templates:
+      title: "Шаблоны серверов на физическом сервере {{name}}"
+      grid:
+        title: "Доступные шаблоны серверов"
+        column:
+          name: "Имя"
+          template_default: "по-умолчанию"
+          virtual_servers: "Серверы"
+        button:
+          add: "Добавить шаблон"
+          remove: "Удалить шаблон"
+          edit: "Изменить шаблон"
+      form:
+        remove_template:
+          sure_to_remove: "Вы действительно хотите удалить выбранные шаблоны серверов?"
+          deletion_failed: "Не удалось удалить некоторые шаблоны серверов."
+        create_server:
+          title: "Создание нового шаблона сервера"
+          edit_title: "Редактирование шаблона сервера"
+          button_create: "Создать"
+          tab:
+            main_settings: "Главные настройки"
+            advanced_settings: "Дополнительные настройки"
+          fieldset:
+            general: "Общие"
+            limits: "Лимиты"
+            dns_settings: "DNS настройки"
+            start_options: "Опции запуска"
+          field:
+            name: "Имя"
+            diskspace: "Размер диска, Mb"
+            memory: "RAM память, Mb"
+            vswap: "Своп, Mb"
+            start_on_boot: "Запуск после загрузки"
+            nameserver: "DNS сервер"
+            search_domain: "Домен для поиска"
+            cpu_units: "CPU единиц"
+            cpus: "Количество CPU"
+            cpu_limit: "CPU лимит, %"
+          grid:
+            column:
+              name: "Имя"
+              soft_limit: "Барьер"
+              hard_limit: "Лимит"
+    backups:
+      title: "Резервные копии для виртуального сервера {{name}}"
+      grid:
+        title: "Резервные копии"
+        button:
+          create: "Резервная копия"
+          restore: "Восстановление"
+          destroy: "Удалить"
+        column:
+          archive_date: "Дата"
+          description: "Описание"
+          size: "Размер, Мб"
+      form:
+        remove_backup:
+          sure_to_remove: "Вы действительно хотите удалить выбранные резерные копии?"
+          deletion_failed: "Не удалось удалить некоторые резервные копии."
+        create:
+          title: "Создать новую резервную копию"
+          scheduled: "Процедура резервного копирования запущена и займет некоторое время."
+          limit_reached: "Достигнут лимит на количество резервных копий."
+          field:
+            description: "Описание"
+            ve_state:
+              title: "Состояние сервера"
+              suspend: "заморозить (рекомендовано)"
+              stop: "остановить"
+              live: "оставить работающим"
+          button_create: "Создать"
+        restore:
+          sure_to_restore: "Вы действительно хотите восстановить выбранную резервную копию? Сервер будет не доступен во время восстановления."
+          failed: "Не удалось выполнить восстановление из резервной копии."
+          scheduled: "Процедура восстановления началась и займет некоторое время."
+    requests:
+      title: "Запросы"
+      grid:
+        title: "Список запросов"
+        column:
+          opened: "Статус"
+          id: "ID"
+          subject: "Тема"
+          replies: "Ответы"
+          author: "Автор"
+          updated_at: "Дата обновления"
+        button:
+          add: "Создать запрос"
+          remove: "Удалить запрос"
+          details: "Детали"
+          solve: "Закрыть запрос"
+          reopen: "Переоткрыть запрос"
+      form:
+        remove_request:
+          sure_to_remove: "Вы действительно хотите удалить выбранные запросы?"
+          deletion_failed: "Не удалось удалить некоторые запросы."
+        create:
+          title: "Создать запрос"
+          button_create: "Создать"
+          field:
+            subject: "Тема"
+            content: "Сообщение"
+      comments:
+        title: "Запрос #{{id}}"
+        grid:
+          title: "Комментарии"
+          column:
+            created_at: "Дата"
+            author: "Автор"
+            content: "Сообщение"
+          button:
+            add: "Добавить комментарий"
+        form:
+          add:
+            title: "Добавить комментарий"
+            button_add: "Добавить"
+            field:
+              content: "Сообщение"
+      mail:
+        new_request:
+          subject: "Новый запрос #{{id}}"
+          body: "Новый запрос #{{id}} был создан пользователем {{login}}."
+        new_comment:
+          subject: "Новый комментарий на запрос #{{request_id}}"
+          body: "Новый комментарий на запрос #{{request_id}} был добавлен пользователем {{login}}."
+    roles:
+      title: "Роли"
+      grid:
+        title: "Список ролей"
+        column:
+          name: "Имя"
+          users: "Пользователи"
+        button:
+          add: "Добавить роль"
+          remove: "Удалить роль"
+          edit: "Редактировать роль"
+      form:
+        remove_role:
+          sure_to_remove: "Вы действительно хотите удалить выбранные роли?"
+          deletion_failed: "Не удалось удалить некоторые роли. Роли, используемые пользователями, не могут быть удалены."
+        create:
+          title: "Создать новую роль"
+          edit_title: "Редактировать роль"
+          field:
+            name: "Имя"
+          fieldset:
+            permissions: "Права"
+            limits: "Лимиты"
+          button_create: "Создать"
+          permissions:
+            manage_hardware_servers: "Управление физическими серверами"
+            use_ve_console: "Консоль виртуального сервера"
+            backup_ve: "Резерные копии виртуального сервера"
+            reinstall_ve: "Переустановка виртуального сервера"
+            handle_requests: "Обработка запросов"
+            create_requests: "Создание запросов"
+            view_tasks: "Просмотр задач"
+            view_logs: "Просмотр журнала событий"
+            manage_logs: "Управление журналом событий"
+            manage_users: "Управление пользователями"
+            select_os_on_reinstall: "Выбор OS при переустановке"
+          limits:
+            unlimited: "неограничено"
+            limit_backups: "Количество резервных копий"
+    ip_addresses:
+      title: "IP адреса"
+      grid:
+        title: "Список IP адресов"
+        column:
+          name: "IP адрес"
+          virtual_server: "Виртуальный сервер"
+          hardware_server: "Физический сервер"
+    ip_pools:
+      grid:
+        title: "Список IP пулов"
+        column:
+          first_ip: "Первый IP адрес"
+          last_ip: "Последний IP адрес"
+          free_ips: "Свободные IP"
+          used_ips: "Занятые IP"
+          total_ips: "Всего IP"
+          server: "Сервер"
+        button:
+          create: "Создать IP пул"
+          destroy: "Удалить IP пул"
+          edit: "Редактировать IP пул"
+      form:
+        remove_pool:
+          sure_to_remove: "Вы действительно хотите удалить выбранные IP пулы?"
+          deletion_failed: "Не удалось удалить некоторые IP пулы."
+        create:
+          title: "Создать новый IP пул"
+          edit_title: "Редактировать IP пул"
+          field:
+            first_ip: "Первый IP адрес"
+            last_ip: "Последний IP адрес"
+            limit_server: "Сервер"
+            all_servers: "все"
+          button_create: "Создать"

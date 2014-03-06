@@ -1,0 +1,10 @@
+hw_daemon:
+  port: 7767
+
+os_templates:
+  mirror:
+    host: download.openvz.org
+    path: /template/
+
+ip_restriction:
+  admin_ips: "192.168.0.1, 192.168.0.2"

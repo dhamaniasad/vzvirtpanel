@@ -1,0 +1,70 @@
+<ul class="pageitem">
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.identity') %></span>
+    <span class="value"><%= h(@virtual_server.identity) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.status') %></span>
+    <span class="value"><%= image_tag (('running' == @virtual_server.real_state) ? 'run.png' : 'stop.png'), :class => 'inline' %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.os_template') %></span>
+    <span class="value"><%= h(@virtual_server.orig_os_template) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.server_template') %></span>
+    <span class="value"><%= h(@virtual_server.orig_server_template) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.ip_address') %></span>
+    <span class="value"><%= h(@virtual_server.ip_address) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.host_name') %></span>
+    <span class="value"><%= h(@virtual_server.host_name) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.diskspace') %></span>
+    <span class="value"><%= h(@virtual_server.human_diskspace) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.memory') %></span>
+    <span class="value"><%= h(@virtual_server.human_memory) %></span>
+  </li>
+  <% if @virtual_server.vswap > 0 %>
+    <li class="smallfield textfield">
+      <span class="name"><%= t('admin.virtual_servers.form.create_server.field.vswap') %></span>
+      <span class="value"><%= h(@virtual_server.vswap) %></span>
+    </li>
+  <% end %>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpu_units') %></span>
+    <span class="value"><%= h(@virtual_server.cpu_units) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpus') %></span>
+    <span class="value"><%= h(@virtual_server.cpus) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.cpu_limit') %></span>
+    <span class="value"><%= h(@virtual_server.cpu_limit) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.nameserver') %></span>
+    <span class="value"><%= h(@virtual_server.nameserver) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.search_domain') %></span>
+    <span class="value"><%= h(@virtual_server.search_domain) %></span>
+  </li>
+  <li class="smallfield textfield">
+    <span class="name"><%= t('admin.virtual_servers.form.create_server.field.description') %></span>
+    <span class="value"><%= h(@virtual_server.description) %></span>
+  </li>
+  <% if !@virtual_server.expiration_date.blank? %>
+    <li class="smallfield textfield">
+      <span class="name"><%= t('admin.virtual_servers.form.create_server.field.expiration_date') %></span>
+      <span class="value"><%= h(@virtual_server.expiration_date.strftime("%Y.%m.%d")) %></span>
+    </li>
+  <% end %>
+</ul>

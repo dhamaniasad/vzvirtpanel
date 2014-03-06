@@ -1,0 +1,32 @@
+<form action="<%= login_path %>" method="post">
+  <fieldset>
+    <span class="graytitle"><%= h(t('login.window_title', :product => @product_name)) %></span>
+    <ul class="pageitem">
+      <li class="smallfield">
+        <span class="name"><%= h(t('login.username')) %></span>
+        <input name="login" type="text" autocapitalize="off"/>
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('login.password')) %></span>
+        <input name="password" type="password" />
+      </li>
+      <% if !AppConfig.locale.single %>
+        <li class="select">
+          <select name="locale">
+            <% @available_locales.each do |locale| %>
+              <option value="<%= locale[0] %>" <%= "selected='selected'" if (I18n.locale.to_s == locale[0]) %>><%= locale[1] %></option>
+            <% end %>
+          </select>
+          <span class="arrow"></span>
+        </li>
+      <% end %>
+      <li class="checkbox">
+        <span class="name"><%= h(t('login.remember_me')) %></span>
+        <input name="remember_me" type="checkbox" checked="true" />
+      </li>
+      <li class="button">
+        <input name="submit" type="submit" value="<%= h(t('login.button_login')) %>" />
+      </li>
+    </ul>
+  </fieldset>
+</form>

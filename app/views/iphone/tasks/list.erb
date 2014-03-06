@@ -1,0 +1,16 @@
+<ul class="pageitem">
+  <% @tasks.each do |task| %>
+    <li class="textbox">
+      <span class="header">
+        <%
+          icon = 'accept.png'
+          icon = 'spinner.gif' if 1 == task.status
+          icon = 'exclamation.png' if 2 == task.status
+        %>
+        <%= image_tag icon, :class => 'inline' %>
+        #<%= h(task.id) %>
+      </span>
+      <%= h(task.t_description) %>
+    </li>
+  <% end %>
+</ul>

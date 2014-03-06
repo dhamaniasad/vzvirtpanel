@@ -1,0 +1,308 @@
+<%= render :partial => 'layouts/header' %>
+  
+  <% javascript_tag do -%>
+    Ext.onReady(function() {
+      var formMyProfile = new Owp.form.BasicForm({
+        labelWidth: 150,
+        waitMsgTarget: !Ext.isGecko,
+        url: '<%= url_for :controller => 'admin/users', :action => 'save_profile' %>',
+        autoHeight: true,
+        defaults: { width: 200 },
+        keys: [{
+          key: Ext.EventObject.ENTER,
+          fn: function() {
+            windowMyProfile.submitButton.handler();
+          }
+        }],
+        items: [{
+          fieldLabel: '<%= tjs('admin.my_profile.user_name') %>',
+          value: '<%= escape_javascript @current_user.login %>',
+          xtype: 'displayfield'
+        }, <% if @current_user.superadmin? || !external_auth? %> {
+          fieldLabel: '<%= tjs('admin.my_profile.current_password') %>',
+          name: 'current_password',
+          inputType: 'password'
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.new_password') %>',
+          name: 'password',
+          inputType: 'password'
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.confirm_password') %>',
+          name: 'password_confirmation',
+          inputType: 'password'
+        }, <% end -%> {
+          fieldLabel: '<%= tjs('admin.my_profile.contact_name') %>',
+          name: 'contact_name',
+          inputType: 'textfield',
+          value: '<%= escape_javascript @current_user.contact_name %>'
+        }, {
+          fieldLabel: '<%= tjs('admin.my_profile.email') %>',
+          name: 'email',
+          inputType: 'textfield',
+          value: '<%= escape_javascript @current_user.email %>',
+          vtype: 'email'
+        }]
+      });  
+      
+      var windowMyProfile = new Owp.form.BasicFormWindow({
+        title: '<%= tjs('admin.my_profile.title') %>',
+        iconCls: 'icon-window-my-profile',
+        width: 410,
+        autoHeight: true,
+        modal: true,
+        layout: 'fit',
+        plain: true,
+        bodyStyle: 'padding: 5px;',
+        resizable: false,
+        items: formMyProfile,
+        closeAction: 'hide',
+        
+        buttons: [{
+          text: '<%= tjs('form.button.save') %>',
+          iconCls: 'icon-button-save',
+          ref: '../submitButton',
+          handler: function() {
+            formMyProfile.form.submit({
+              waitMsg: '<%= tjs('form.loading') %>',
+              success: function() {
+                window.location.reload();
+              },
+              failure: function(form, action) {
+                Owp.form.errorHandler(form, action);
+                windowMyProfile.focus();
+              }
+            });
+          }
+        }, {
+          text: '<%= tjs('form.button.cancel') %>',
+          iconCls: 'icon-button-cancel',
+          handler: function() {
+            windowMyProfile.hide();
+          }
+        }]
+      });
+      
+      windowMyProfile.on('show', function() {
+        formMyProfile.getForm().reset();
+      });  
+    
+      var mainMenu = new Ext.tree.AsyncTreeNode({
+        expandable: false,
+        expanded: true,
+        children: [{
+          expanded: true,
+          expandable: false,
+          cls: 'menu-title',
+          text: '<%= tjs('admin.menu.general.title') %>',
+          children: [{
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.dashboard') %>',
+            href: '<%= url_for :controller => 'admin/dashboard' %>',
+            icon: '<%= image_path 'application_view_tile.png' %>',
+            leaf: true
+          }, <% if @current_user.superadmin? %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.hardware_servers') %>',
+            href: '<%= url_for :controller => 'admin/hardware-servers/list' %>',
+            icon: '<%= image_path 'server.png' %>',
+            expandable: false,
+            expanded: true,
+            children: <%= @servers_list.to_json %>
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.ip_addresses') %>',
+            href: '<%= url_for :controller => 'admin/ip-addresses/list' %>',
+            icon: '<%= image_path 'network_adapter.png' %>',
+            leaf: true
+          }, <% else %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.virtual_servers') %>',
+            href: '<%= url_for :controller => 'admin/virtual-servers/list' %>',
+            icon: '<%= image_path 'server.png' %>',
+            expandable: false,
+            expanded: true,
+            children: <%= @servers_list.to_json %>
+          }, <% end -%> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.my_profile') %>',
+            icon: '<%= image_path 'vcard.png' %>',
+            leaf: true,
+            listeners: {
+              click: function() {
+                windowMyProfile.show();
+              }
+            }
+          }, <% if @current_user.can_manage_users? %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.users') %>',
+            href: '<%= url_for :controller => 'admin/users/list' %>',
+            icon: '<%= image_path 'user.png' %>',
+            leaf: true
+          }, <% end -%> <% if @current_user.can_create_requests? || @current_user.can_handle_requests? %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.requests') %>',
+            href: '<%= url_for :controller => 'admin/requests/list' %>',
+            icon: '<%= image_path 'comment_edit.png' %>'
+          }, <% end -%> <% if @current_user.can_view_tasks? %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.tasks') %>',
+            href: '<%= url_for :controller => 'admin/tasks/list' %>',
+            icon: '<%= image_path 'cog.png' %>'
+          }, <% end -%> <% if @current_user.can_view_logs? || @current_user.can_manage_logs? %> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.event_log') %>',
+            href: '<%= url_for :controller => 'admin/event-log/list' %>',
+            icon: '<%= image_path 'book.png' %>'
+          }, <% end -%> {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.general.logout') %>',
+            icon: '<%= image_path 'key_go.png' %>',
+            leaf: true,
+            listeners: {
+              click: function() {
+                Ext.MessageBox.confirm('<%= tjs('form.confirmation') %>', '<%= tjs('admin.logout') %>', function(button, text) {
+                  if ('yes' == button) {
+                    window.location.href = '<%= logout_path %>';
+                  }
+                });
+              }
+            }
+          }]
+        }, {
+          expanded: true,
+          expandable: false,
+          cls: 'menu-title',
+          text: '<%= tjs('admin.menu.help.title') %>',
+          children: [{
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.help.documentation') %>',
+            href: '<%= escape_javascript(@current_user.superadmin? ? AppConfig.help.admin_doc_url : AppConfig.help.user_doc_url) %>',
+            icon: '<%= image_path 'help.png' %>',
+            leaf: true
+          }, {
+            cls: 'menu-item',
+            text: '<%= tjs('admin.menu.help.support') %>',
+            href: '<%= escape_javascript(AppConfig.help.support_url) %>',
+            icon: '<%= image_path 'bug.png' %>',
+            leaf: true
+          }]
+        }]
+      });
+      
+      <%= render :partial => 'layouts/search' if @current_user.superadmin? %>
+
+      function getTopBar() {
+        var upLevelLink = '<%= @up_level %>';
+      
+        var items = [{
+          xtype: 'tbfill'
+        }, <% if @current_user.superadmin? %> {
+          text: '<%= tjs('admin.operations.search') %>',
+          handler: function() {
+            formSearch.find('name', 'query')[0].setRawValue('');
+            storeSearch.removeAll();
+            windowSearch.show();
+          },
+          cls: 'x-btn-text-icon',
+          icon: '<%= image_path 'zoom.png' %>'
+        }, <% end -%> {
+          text: '<%= tjs('admin.operations.up_level') %>',
+          handler: function() {
+            document.location.href = BASE_URL + upLevelLink;
+          },
+          disabled: ('' == upLevelLink),
+          cls: 'x-btn-text-icon',
+          icon: '<%= image_path 'arrow_up.png' %>'
+        }];
+
+        var topBar = new Ext.Toolbar({
+          enableOverflow: true,
+          items: items
+        });
+      
+        return topBar;
+      }
+
+      var viewport = new Ext.Viewport({
+        layout: 'border',
+        listeners: {
+          afterrender: function() {
+            <% if @current_user.superadmin? %>
+              Owp.statusUpdater.start();
+            <% end -%>
+          }
+        },
+        items: [
+          new Ext.BoxComponent({
+            region: 'north',
+            id: 'top-header',
+            cls: 'x-panel-header',
+            html: '<%= escape_javascript(render :partial => 'layouts/top_header') %>',
+            height: 50,
+            listeners: {
+              afterrender: function() {
+                <%= render :partial => 'layouts/about_box' %>
+              }
+            }
+          }), {
+            region: 'west',
+            stateId: 'adminWestPanel',
+            title: '<%= tjs('admin.menu.title') %>',
+            contentEl: 'main-menu',
+            split: true,
+            width: 250,
+            minSize: 200,
+            maxSize: 400,
+            collapsible: true,
+            margins: '5 0 5 5',
+            layout: 'accordion',
+            layoutConfig: { animate: true },                
+            xtype: 'treepanel',
+            loader: new Ext.tree.TreeLoader(),
+            rootVisible: false,
+            lines: false,
+            autoScroll: true,
+            root: mainMenu,
+            listeners: {
+              click: function(node, event) {
+                var href = node.attributes.href;
+                if ('undefined' != typeof href) {
+                  if (href.indexOf('http') === 0) {
+                    window.open(href);
+                    event.stopEvent();
+                    return false;
+                  } else {
+                    window.location.href = href;
+                  }
+                }
+              }
+            }
+          }, {
+            region: 'center',
+            layout: 'fit',
+            contentEl: 'main-content',
+            xtype: 'panel',
+            title: '<img class="icon-inline-big" src="<%= image_path "big-icons/#{@page_icon}" %>"><%= escape_javascript(@page_title) %>',
+            cls: 'main-content-center-panel',
+            id: 'mainContentCenterPanel',
+            bodyStyle: 'background: #FFFFFF url(<%= image_path 'openvz-big-logo.gif' %>) no-repeat scroll right bottom',
+            tbar: getTopBar(),
+            bbar: [{
+              xtype: 'box',
+              height: 22,
+              style: { lineHeight: '22px', paddingLeft: '10px' },
+              id: 'statusbar'
+            }]
+          }
+        ]
+      });
+    });
+  <% end -%>
+  
+  <div id='main-menu'></div>
+  
+  <div id='main-content'></div>
+  
+  <div style="display: none;"><%= yield %></div>
+  
+<%= render :partial => 'layouts/footer' %>

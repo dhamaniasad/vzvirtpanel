@@ -1,0 +1,8 @@
+<ul class="pageitem">
+  <% @stats.each do |item| %>
+    <li class="smallfield textfield">
+      <span class="name"><%= h(item[1]) %></span>
+      <span class="value"><%= h(item[2]) %></span>
+    </li>
+  <% end %>
+</ul>

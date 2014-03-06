@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../config/boot'
+require 'rake'
+require 'rake/testtask'
+
+begin
+  gem 'rdoc'
+  require 'rdoc/task'
+rescue Gem::LoadError
+  require 'rake/rdoctask'
+end
+
+require 'tasks/rails'
+
+Rake::Task['cron:all'].invoke

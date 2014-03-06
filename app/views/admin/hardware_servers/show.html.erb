@@ -1,0 +1,344 @@
+<% @page_title = t('admin.hardware_servers.show.title', :name => @hardware_server.host) %>
+<% @page_icon = 'server.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  <%= render :partial => 'admin/virtual_servers/edit_form' %>
+
+  var changeStateAction = function(action) {
+    Owp.list.groupAction({
+      gridName: 'virtualServersGrid',
+      url: '<%= url_for :controller => 'admin/virtual-servers' %>' + '/' + action,
+      command: action,
+      waitMsg: '<%= tjs('form.performing_task') %>',
+      failure: {
+        title: '<%= tjs('form.error.title') %>',
+        msg: '<%= tjs('admin.virtual_servers.form.change_state.failed') %>'
+      }
+    });
+  }
+  
+  function addVirtualServer() {
+    showVirtualServerEditForm('add', virtualServersGrid);
+  }
+  
+  function editVirtualServer() {
+    showVirtualServerEditForm('edit', virtualServersGrid);
+  }
+  
+  function removeVirtaulServer() {            
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.virtual_servers.form.remove_server.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'virtualServersGrid',
+            url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'delete' %>',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.virtual_servers.form.remove_server.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'list_data', :hardware_server_id => @hardware_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @virtual_servers_list }.to_json %>,
+    sortInfo: { field: 'identity', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'identity', sortType: 'asInt', type: 'int' },
+      { name: 'ip_address' },
+      { name: 'host_name' },
+      { name: 'state' },
+      { name: 'os_template_name' },
+      { name: 'memory' },
+      { name: 'diskspace' },
+      { name: 'owner' },
+      { name: 'expiration_date' },
+      { name: 'is_expired' },
+      { name: 'description' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({
+    renderer: function(value, metaData) {
+      metaData.cellAttr = 'rowspan="2"';
+      return Ext.grid.CheckboxSelectionModel.prototype.renderer.apply(this, arguments);
+    },
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          virtualServersGrid.removeButton.enable();
+          virtualServersGrid.changeStateButton.enable();
+        } else {
+          virtualServersGrid.removeButton.disable();
+          virtualServersGrid.changeStateButton.disable();
+        }
+        
+        if (1 == selectionModel.getCount()) {
+          virtualServersGrid.editButton.enable();
+        } else {
+          virtualServersGrid.editButton.disable();
+        }
+      }
+    }
+  });
+  
+  var virtualServersGrid = new Ext.grid.GridPanel({
+    id: 'virtualServersGrid',
+    title: '<%= tjs('admin.virtual_servers.grid.title') %>',
+    iconCls: 'icon-items-list',
+    store: store,
+    loadMask: true,
+    region: 'center',
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        virtualServersGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel({
+      listeners: {
+        hiddenchange: function(cm, colIndex, hidden) {
+          if ('description' == cm.getColumnId(colIndex)) {
+            virtualServersGrid.getView().refresh();
+          }
+        }
+      },
+      columns: [
+        selectionModel, 
+        { 
+          id: 'state',
+          header: '<%= tjs('admin.virtual_servers.grid.column.state') %>',
+          renderer: function(value, metaData) {
+            metaData.cellAttr = 'rowspan="2"';
+            var image = ('running' == value) ? 'run.png' : 'stop.png';
+            return '<img src="' + BASE_URL + '/images/' + image + '"/>';
+          },
+          width: 60,
+          align: 'center',
+          sortable: true,
+          dataIndex: 'state'
+        }, { 
+          id: 'identity',
+          header: '<%= tjs('admin.virtual_servers.grid.column.identity') %>',
+          width: 60,
+          sortable: true,
+          dataIndex: 'identity',
+          renderer: function(identity, metadata, record) {
+            return "<a href='<%= url_for :controller => 'admin/virtual-servers', :action => 'show' %>?id=" + record.data.id + "'>" + identity + "</a>";
+          }
+        }, {
+          id: 'ip_address',
+          header: '<%= tjs('admin.virtual_servers.grid.column.ip_address') %>',
+          sortable: true,
+          dataIndex: 'ip_address'
+        }, {
+          id: 'host_name',
+          header: '<%= tjs('admin.virtual_servers.grid.column.host_name') %>',
+          sortable: true,
+          dataIndex: 'host_name'
+        }, {
+          id: 'memory',
+          header: '<%= tjs('admin.virtual_servers.grid.column.memory') %>',
+          sortable: true,
+          dataIndex: 'memory'
+        }, {
+          id: 'diskspace',
+          header: '<%= tjs('admin.virtual_servers.grid.column.diskspace') %>',
+          sortable: true,
+          dataIndex: 'diskspace'
+        }, {
+          id: 'os_template_name',
+          header: '<%= tjs('admin.virtual_servers.grid.column.os_template') %>',
+          sortable: true,
+          dataIndex: 'os_template_name'
+        }, {
+          id: 'expiration_date',
+          header: '<%= tjs('admin.virtual_servers.grid.column.expiration_date') %>',
+          sortable: true,
+          dataIndex: 'expiration_date',
+          renderer: function(value, metaData, record) {
+            return record.data.is_expired
+              ? "<span class='error-text'>" + value + "</span>"
+              : value;
+          }
+        }, {
+          id: 'owner',
+          header: '<%= tjs('admin.virtual_servers.grid.column.owner') %>',
+          sortable: true,
+          dataIndex: 'owner'
+        }, {
+          id: 'description',
+          header: '<%= tjs('admin.virtual_servers.grid.column.description') %>',
+          sortable: true,
+          hidden: true,
+          width: 120,
+          dataIndex: 'description'
+        }
+      ]
+    }),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'os_template_name',
+    autoWidth: true,
+    frame: true,
+    listeners: {
+      celldblclick: function(grid, rowIndex, columnIndex, eventObject) {
+        var selectedNode = grid.getSelectionModel().getSelected();
+        document.location.href = '<%= url_for :controller => 'admin/virtual-servers', :action => 'show' %>?id=' + selectedNode.data.id;
+      }
+    },
+    viewConfig: {
+      enableRowBody: true,
+      forceFit: true,
+      getRowClass: function(record, index, rowParams, store) {
+        if (!virtualServersGrid.getColumnModel().getColumnById('description').hidden) {
+          return 'x-grid3-row-collapsed';
+        }
+        var description = record.data.description;
+        if (description) {
+          rowParams.body = '<div class="x-grid3-cell-inner">' + record.data.description + '</div>';
+          return 'x-grid3-row-expanded';
+        } else {
+          return 'x-grid3-row-collapsed';
+        }
+      }
+    },
+    tbar: [{
+      text: '<%= tjs('admin.virtual_servers.grid.button.create') %>',
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'add.png' %>',
+      handler: addVirtualServer
+    }, {
+      text: '<%= tjs('admin.virtual_servers.grid.button.destroy') %>', 
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'delete.png' %>',     
+      handler: removeVirtaulServer,
+      ref: '../removeButton',
+      disabled: true
+    }, '-', {
+      text: '<%= tjs('admin.virtual_servers.grid.button.edit') %>',
+      handler: editVirtualServer,
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'wrench.png' %>',
+      ref: '../editButton',
+      disabled: true
+    }, '-', {      
+      text: '<%= tjs('admin.virtual_servers.grid.button.change_state') %>',
+      iconCls: 'icon-button-change-state',
+      ref: '../changeStateButton',
+      disabled: true,
+      menu: [{
+        text: '<%= tjs('admin.virtual_servers.grid.button.start') %>',
+        iconCls: 'icon-button-start-server',
+        handler: changeStateAction.createCallback('start')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.stop') %>',
+        iconCls: 'icon-button-stop-server',
+        handler: changeStateAction.createCallback('stop')
+      }, {
+        text: '<%= tjs('admin.virtual_servers.grid.button.restart') %>',
+        iconCls: 'icon-button-restart-server',
+        handler: changeStateAction.createCallback('restart')
+      }] 
+    }]
+  });
+
+  var statsStore = new Ext.data.JsonStore({
+    url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'get_stats', :id => @hardware_server.id %>',
+    root: 'data',
+    data: <%= { :data => @hardware_server_stats }.to_json %>,
+    autoLoad: true,
+    fields: [
+      { name: 'parameter' },
+      { name: 'value' }
+    ]
+  });
+
+  var hwServerStatsGrid = new Ext.grid.GridPanel({
+    id: 'hwServerStatsGrid',
+    title: '<%= tjs('admin.hardware_servers.stats.title') %>',
+    region: 'north',
+    loadMask: true,
+    collapsible: true,
+    autoWidth: true,
+    height: 150,
+    autoExpandColumn: 'value',
+    stateId: 'hwServerStatsGrid',
+    iconCls: 'icon-items-list',
+    split: true,
+    store: statsStore,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        hwServerStatsGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([{
+      id: 'parameter',
+      header: '<%= tjs('admin.hardware_servers.stats.column.parameter') %>',
+      width: 250,
+      dataIndex: 'parameter'
+    }, {
+      id: 'value',
+      header: '<%= tjs('admin.hardware_servers.stats.column.value') %>',
+      dataIndex: 'value',
+      renderer: function(value) {
+        if ('string' == typeof value) {
+          return value;
+        } else {
+          var progressBarId = Ext.id();
+          (function() {
+            new Ext.ProgressBar({
+              renderTo: progressBarId,
+              value: value['percent'],
+              width: 100,
+              height: 14
+            });
+          }).defer(25);
+          
+          return '<div><div style="float: left; padding-right: 10px;" id="' + progressBarId + '"></div> <div>' + value['text'] + '</div></div>';
+        }
+      }
+    }])
+  });
+  
+  var panelsWrapper = new Ext.Panel({
+    layout: 'border',
+    border: false,
+    items: [ hwServerStatsGrid, virtualServersGrid ]
+  });
+
+  Owp.layout.addToCenter(panelsWrapper);
+  
+  var mainContentCenterPanel = Ext.getCmp('mainContentCenterPanel');
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.hardware_servers.top_toolbar.server_templates') %>',
+    icon: '<%= image_path 'package.png' %>',
+    handler: function() {
+      document.location.href = '<%= url_for :controller => 'admin/server-templates', :action => 'list', :hardware_server_id => @hardware_server.id %>';
+    }
+  });
+  
+  mainContentCenterPanel.getTopToolbar().insertButton(0, {
+    text: '<%= tjs('admin.hardware_servers.top_toolbar.os_templates') %>',
+    icon: '<%= image_path 'tux.png' %>',
+    handler: function() {
+      document.location.href = '<%= url_for :controller => 'admin/os-templates', :action => 'list', :hardware_server_id => @hardware_server.id %>';
+    }
+  });
+  
+  mainContentCenterPanel.doLayout();
+});
+<% end -%>

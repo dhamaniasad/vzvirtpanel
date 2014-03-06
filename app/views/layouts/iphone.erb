@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title><%= @product_name %></title>
+  <meta name="viewport" content="width=devicewidth; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+  <link rel="apple-touch-icon" href="<%= image_path 'logo-touch-icon.png' %>" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <%= javascript_tag "var BASE_URL = '#{base_url}';" %>
+  <%= stylesheet_link_tag '/iwebkit/css/style.css' %>
+  <%= javascript_include_tag '/iwebkit/javascript/functions.js' %>
+  <%= stylesheet_link_tag '/stylesheets/iphone.css' %>
+</head>
+
+<body>
+  <div id="topbar">
+    <div id="title"><%= @page_title %></div>
+    <% if @current_user %>
+      <div id="rightbutton">
+        <%= link_to(t('admin.menu.general.logout'), { :controller => '/sessions', :action => 'destroy' }, { :class => 'noeffect' }) %>
+      </div>
+    <% end %>
+    <% if @show_home_button %>
+      <div id="leftnav"> 
+        <% link_to(:controller => 'dashboard') do %>
+          <img alt="home" src="<%= base_url + '/iwebkit/images/home.png' %>" />
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  
+  <div id="content">
+    <% if flash[:error] %>
+      <% if flash[:error].is_a?(String) %>
+        <ul class="error pageitem"><li class="textbox"><%= h(flash[:error]) %></li></ul>
+      <% else %>
+        <ul class="error pageitem">
+          <% flash[:error].each do |field, error| %>
+            <li class="textbox"><%= h(error) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+    
+    <%= yield %>
+  </div>
+</body>
+</html>

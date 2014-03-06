@@ -1,0 +1,103 @@
+<% @page_title = t('admin.dashboard.title') %>
+<% @page_icon = 'application_view_tile.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  var container = new Ext.Container({
+    layout: 'anchor'
+  });
+  
+  <% if !@watchdog_alive %>
+    // TODO: add localization
+    var watchdogPanel = new Ext.Panel({
+      header: false,
+      cls: 'panel-dashboard',
+      html: '<p><img src="' + BASE_URL + '/images/exclamation.png" class="icon-inline"/>' 
+        + 'Unable to connect to watchdog daemon. Probably it is not running. '
+        + '</p>'
+    });
+    
+    container.add(watchdogPanel);
+  <% end -%>
+  
+  <% if @updates %>
+    var updatesPanel = new Ext.Panel({
+      header: false,
+      cls: 'panel-dashboard',
+      html: '<p><img src="' + BASE_URL + '/images/information.png" class="icon-inline"/>'
+        + '<%= tjs('admin.dashboard.updates.text', :product => '<b>' + PRODUCT_NAME + ' ' + @updates[:version] + '</b>') %> '
+        + '<%= tjs('admin.dashboard.updates.update_command', :command => '<span class="no-wrap">' + @updates[:update_command] + '</span>') %>'
+        + '</p>'
+    });
+    
+    container.add(updatesPanel);
+  <% end -%>
+
+  var introPanel = new Owp.Panel({
+    title: '<%= tjs('admin.dashboard.intro.title') %>',
+    collapsible: true,
+    stateId: 'introPanel',
+    cls: 'panel-dashboard',
+    html: '<p>' + '<%= tjs('admin.dashboard.intro.text') %>' + '</p>'
+  });
+  
+  container.add(introPanel);
+  
+  var profilePanel = new Owp.Panel({
+    title: '<%= tjs('admin.dashboard.profile.title') %>',
+    collapsible: true,
+    stateId: 'profilePanel',
+    cls: 'panel-dashboard',
+    html: '<p>' + '<%= tjs('admin.dashboard.profile.text', :login => '<b>' + @current_user.full_name + '</b>') %>' + '</p>'
+  });
+  
+  container.add(profilePanel);
+  
+  <% if @current_user.superadmin? %>
+    var storeData = <%= @stats_data.to_json %> ;
+    
+    var store = new Ext.data.ArrayStore({
+      fields: [
+        { name: 'icon' },
+        { name: 'parameter' },
+        { name: 'value' }
+      ]
+    });
+    
+    store.loadData(storeData);
+    
+    var statsGrid = new Owp.grid.GridPanel({
+      id: 'statsGrid',
+      title: '<%= tjs('admin.dashboard.stats_grid.title') %>',
+      iconCls: 'icon-items-list',
+      cls: 'panel-dashboard',
+      store: store,
+      autoWidth: true,
+      autoHeight: true,
+      stripeRows: true,
+      autoExpandColumn: 'value',
+      collapsible: true,
+      stateId: 'statsGrid',
+      cm: new Ext.grid.ColumnModel([{
+        id: 'parameter',
+        header: '<%= tjs('admin.dashboard.stats_grid.column.parameter') %>',
+        width: 250,
+        dataIndex: 'parameter',
+        renderer: function(value, metaData, record) {
+          return '<img src="' + BASE_URL + '/images/' + record.data.icon + '" class="icon-inline"/>' + value;
+        }
+      }, {
+        id: 'value',
+        header: '<%= tjs('admin.dashboard.stats_grid.column.value') %>',
+        dataIndex: 'value'
+      }])    
+    });
+    
+    container.add(statsGrid);
+  <% end -%>
+  
+  Owp.layout.addToCenter(container);
+});
+<% end -%>
+

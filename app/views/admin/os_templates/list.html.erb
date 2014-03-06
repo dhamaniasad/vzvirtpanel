@@ -1,0 +1,377 @@
+<% @page_title = t('admin.os_templates.title', { :name => @hardware_server.host }) %>
+<% @page_icon = 'tux.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function onFormChange() {
+    var selectedOfficialTemplates = windowInstallNewTemplate.officialTemplatesGrid
+      ? windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().getCount()
+      : 0;
+    var selectedContributedTemplates = windowInstallNewTemplate.contributedTemplatesGrid
+      ? windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().getCount()
+      : 0;
+    var templateUrl = windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].getValue();
+    
+    if (selectedOfficialTemplates || selectedContributedTemplates || templateUrl) {
+      windowInstallNewTemplate.installButton.enable();
+    } else {
+      windowInstallNewTemplate.installButton.disable();
+    }
+  }
+  
+  function clearInstallForm() {
+    try {
+      if ('undefined' != typeof windowInstallNewTemplate.officialTemplatesGrid) {
+        windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().clearSelections();
+      }
+      
+      if ('undefined' != typeof windowInstallNewTemplate.contributedTemplatesGrid) {
+        windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().clearSelections();
+      }
+    } catch(e) { }
+    
+    windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].setRawValue('');
+  }
+
+  function installTemplates() {
+    var selectedOfficialTemplates = [];    
+    
+    if (windowInstallNewTemplate.officialTemplatesGrid) {
+      var selectedItems = windowInstallNewTemplate.officialTemplatesGrid.getSelectionModel().getSelections();
+      
+      Ext.each(selectedItems, function(item) {    
+        selectedOfficialTemplates.push(item.data.name);
+      });
+    }
+    
+    var selectedContributedTemplates = [];
+    
+    if (windowInstallNewTemplate.contributedTemplatesGrid) {
+      var selectedItems = windowInstallNewTemplate.contributedTemplatesGrid.getSelectionModel().getSelections();
+      
+      Ext.each(selectedItems, function(item) {    
+        selectedContributedTemplates.push(item.data.name);
+      });
+    }
+    
+    var templateUrl = windowInstallNewTemplate.templateUrlPanel.find('name', 'template_url')[0].getValue();
+    
+    var progressBar = Ext.Msg.wait('<%= tjs('form.performing_task') %>');
+  
+    Ext.Ajax.request({
+      url: '<%= url_for :controller => 'admin/os-templates', :action => 'install', :hardware_server_id => @hardware_server.id %>',
+      success: function(response) {
+        progressBar.hide();
+           
+        var result = Ext.util.JSON.decode(response.responseText);
+        
+        if (!result.success) {
+          Ext.MessageBox.show({
+            title: '<%= tjs('form.error.title') %>',
+            msg: '<%= tjs('admin.os_templates.form.install.failed') %>',
+            buttons: Ext.Msg.OK,
+            icon: Ext.MessageBox.ERROR
+          });
+        } else {
+          windowInstallNewTemplate.hide();
+          clearInstallForm();
+        
+          Ext.MessageBox.show({
+            title: '<%= tjs('form.info.title') %>',
+            msg: '<%= tjs('admin.os_templates.form.install.scheduled') %>',
+            buttons: Ext.Msg.OK,
+            icon: Ext.MessageBox.INFO
+          });
+          
+          Owp.statusUpdater.start();
+        }
+      },
+      failure: function() {
+        Ext.MessageBox.show({
+          title: '<%= tjs('form.error.title') %>',
+          msg: 'Internal error occured. See logs for details.',
+          buttons: Ext.Msg.OK,
+          icon: Ext.MessageBox.ERROR
+        });
+      },
+      params: { 
+        selected_official_templates: [selectedOfficialTemplates],
+        selected_contributed_templates: [selectedContributedTemplates],
+        template_url: templateUrl
+      },
+      scope: this
+    });
+  }
+
+  function removeOsTemplates() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.os_templates.form.remove_template.sure_to_remove') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.list.groupAction({
+            gridName: 'osTemplatesGrid',
+            url: '<%= url_for :controller => 'admin/os-templates', :action => 'delete' %>',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.os_templates.form.remove_template.deletion_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var windowInstallNewTemplate;
+  
+  function installNewTemplate() {
+    var selectionModelOfficial = new Ext.grid.CheckboxSelectionModel({
+      listeners: { selectionchange: onFormChange }
+    });
+    var selectionModelContributed = new Ext.grid.CheckboxSelectionModel({
+      listeners: { selectionchange: onFormChange }
+    });
+  
+    if (!windowInstallNewTemplate) {
+      var storeOfficialTemplates = new Ext.data.JsonStore({
+        url: '<%= url_for :controller => 'admin/os-templates', :action => 'available_list_data', :hardware_server_id => @hardware_server.id %>',
+        root: 'data',
+        autoLoad: true,
+        sortInfo: { field: 'name', direction: 'ASC' },
+        fields: [{ name: 'name' }, { name: 'size' }],
+        listeners: {
+          exception: function() {
+            if (windowInstallNewTemplate) {
+              Ext.MessageBox.show({
+                title: '<%= tjs('form.error.title') %>',
+                msg: '<%= tjs('admin.os_templates.form.install.load_failed') %>',
+                buttons: Ext.Msg.OK,
+                icon: Ext.MessageBox.ERROR,
+                fn: function() {
+                  windowInstallNewTemplate.hide();
+                  windowInstallNewTemplate = null;
+                }
+              });
+            }
+          }
+        }
+      });
+      
+      var storeContributedTemplates = new Ext.data.JsonStore({
+        url: '<%= url_for :controller => 'admin/os-templates', :action => 'available_list_data', :hardware_server_id => @hardware_server.id %>' + '&contributed=yes',
+        root: 'data',
+        autoLoad: true,
+        sortInfo: { field: 'name', direction: 'ASC' },
+        fields: [{ name: 'name' }, { name: 'size' }]
+      });
+    
+      windowInstallNewTemplate = new Ext.Window({
+        title: '<%= tjs('admin.os_templates.form.install.title') %>',
+        iconCls: 'icon-window-add',
+        width: 400,
+        modal: true,
+        layout: 'fit',
+        plain: true,
+        bodyStyle: 'padding:5px;',
+        resizable: false,
+        autoHeight: true,
+        listeners: {
+          show: function() {
+            if (Ext.isIE) {
+              windowInstallNewTemplate.officialTemplatesGrid.setSize('100%', 300);
+            }
+          }
+        },
+        items: [{
+          xtype: 'tabpanel',
+          activeTab: 0,
+          layoutOnTabChange : true,
+          autoHeight: true,
+          listeners: {
+            tabchange: function(tabPanel, activePanel) {
+              windowInstallNewTemplate.syncSize();
+            }
+          },
+          items: [{
+            title: '<%= tjs('admin.os_templates.form.install.tab.official') %>',
+            xtype: 'grid',
+            height: 300,
+            layout: 'fit',
+            loadMask: true,
+            ref: '../officialTemplatesGrid',
+            store: storeOfficialTemplates,
+            cm: new Ext.grid.ColumnModel([selectionModelOfficial, {
+              id: 'name',
+              header: '<%= tjs('admin.os_templates.grid.column.name') %>',
+              sortable: true,
+              dataIndex: 'name'
+            }, {
+              id: 'size',
+              header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'size'
+            }]),
+            sm: selectionModelOfficial,
+            stripeRows: true,
+            autoExpandColumn: 'name',
+            autoWidth: true,
+            stripeRows: true,
+            frame: true,
+            iconCls: 'icon-items-list'
+          }, {
+            title: '<%= tjs('admin.os_templates.form.install.tab.contributed') %>',
+            xtype: 'grid',
+            height: 300,
+            layout: 'fit',
+            ref: '../contributedTemplatesGrid',
+            store: storeContributedTemplates,
+            cm: new Ext.grid.ColumnModel([selectionModelContributed, {
+              id: 'name',
+              header: '<%= tjs('admin.os_templates.grid.column.name') %>',
+              sortable: true,
+              dataIndex: 'name'
+            }, {
+              id: 'size',
+              header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+              width: 100,
+              sortable: true,
+              dataIndex: 'size'
+            }]),
+            sm: selectionModelContributed,
+            stripeRows: true,
+            autoExpandColumn: 'name',
+            autoWidth: true,
+            stripeRows: true,
+            frame: true,
+            iconCls: 'icon-items-list'
+          }, {
+            title: '<%= tjs('admin.os_templates.form.install.tab.url') %>',
+            xtype: 'panel',
+            layout: 'form',
+            autoHeight: true,
+            labelWidth: 150,
+            bodyStyle: 'padding: 10px; background-color: #CCD9E8;',
+            ref: '../templateUrlPanel',
+            items: [{
+              fieldLabel: '<%= tjs('admin.os_templates.form.install.field.url') %>',
+              width: 180,
+              name: 'template_url',
+              xtype: 'textfield',
+              validator: function(value) {
+                if (!value || /^(https?|ftp):\/\/.*\.tar\.gz/.test(value)) {
+                  return true;
+                } else {
+                  return '<%= tjs('admin.os_templates.form.install.invalid_url') %>';
+                }
+              },
+              enableKeyEvents: true,
+              listeners: { keyup: onFormChange }
+            }]
+          }]
+        }],
+        closeAction: 'hide',        
+        buttons: [{
+          text: '<%= tjs('admin.os_templates.form.install.button_install') %>',
+          iconCls: 'icon-button-add',
+          disabled: true,
+          ref: '../installButton',
+          handler: installTemplates
+        }, {
+          text: '<%= tjs('form.button.cancel') %>',
+          iconCls: 'icon-button-cancel',
+          handler: function() {
+            windowInstallNewTemplate.hide();
+          }
+        }]
+      });
+    }
+    
+    clearInstallForm();
+    windowInstallNewTemplate.show();
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '<%= url_for :controller => 'admin/os-templates', :action => 'list_data', :hardware_server_id => @hardware_server.id %>',
+    root: 'data',
+    autoLoad: true,
+    data: <%= { :data => @os_templates_list }.to_json %>,
+    sortInfo: { field: 'name', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'name' },
+      { name: 'size' },
+      { name: 'virtual_servers' }
+    ]
+  });
+  
+  var selectionModel = new Ext.grid.CheckboxSelectionModel({ 
+    listeners: {
+      selectionchange: function(selectionModel) {
+        if (selectionModel.getCount()) {
+          osTemplatesGrid.removeButton.enable();
+        } else {
+          osTemplatesGrid.removeButton.disable();
+        }
+      }
+    }
+  });
+  
+  var osTemplatesGrid = new Ext.grid.GridPanel({
+    id: 'osTemplatesGrid',
+    store: store,
+    title: '<%= tjs('admin.os_templates.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        osTemplatesGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      selectionModel,
+      {
+        id: 'name',
+        header: '<%= tjs('admin.os_templates.grid.column.name') %>',
+        sortable: true,
+        dataIndex: 'name'
+      }, {
+        id: 'size',
+        header: '<%= tjs('admin.os_templates.grid.column.size') %>',
+        sortable: true,
+        width: 100,
+        dataIndex: 'size'
+      }, {
+        id: 'virtual_servers',
+        header: '<%= tjs('admin.os_templates.grid.column.virtual_servers') %>',
+        sortable: true,
+        dataIndex: 'virtual_servers'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'name',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    tbar: [{
+      text: '<%= tjs('admin.os_templates.grid.button.install_new_template') %>',
+      handler: installNewTemplate,
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'add.png' %>'
+    }, {
+      text: '<%= tjs('admin.os_templates.grid.button.remove') %>', 
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'delete.png' %>',     
+      handler: removeOsTemplates,
+      ref: '../removeButton',
+      disabled: true
+    }]
+  });
+
+  Owp.layout.addToCenter(osTemplatesGrid);
+});
+<% end -%>

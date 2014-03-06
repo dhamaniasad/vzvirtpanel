@@ -1,0 +1,729 @@
+pt_BR:
+  language:
+    title: "Portugues do Brasil"
+  form:
+    loading: "Aguarde um instante..."
+    confirmation: "Confirme"
+    performing_task: "Aguarde um instante. Executando tarefa..."
+    error:
+      title: "Erro"
+      fill_form: "Por favor, preencha o formulário."
+    info:
+      title: "Informações"
+    button:
+      save: "Salvar"
+      cancel: "Cancelar"
+      create: "Criar"
+      back: "Voltar"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: "As senhas digitadas não são iguais..."
+              too_short: "Senha muito curta (minimum symbols: {{count}})."
+            password_confirmation:
+              blank: "É necessário a confirmação da senha."
+            login:
+              taken: "Nome de usuário já existe."
+              too_short: "Nome de usuário (login) muito curto (minimum symbols: {{count}})."
+        hardware_server:
+          attributes:
+            host:
+              taken: "Servidor com esse nome já existe."
+              connection: "Conexão falhou. Talvez este serviço não esteja rodando."
+              ssh_connection: "Não foi possível estabelecer conexão SSH."
+              openvz_not_found: "Virtualização OpenVZ não encontrada no servidor."
+              ruby_not_found: "O interpretador Ruby não foi encontrado no servidor."
+            auth_key:
+              bad_auth: "Não autorizado. Provavelmente a chave de autenticação está incorreta."
+            daemon_port:
+              not_a_number: "Porta inválida."
+              greater_than: "O número da porta deverá ser superior a {{count}}."
+              less_than: "O número da porta não poderá ser inferior a {{count}}."
+            root_password:
+              ssh_bad_auth: "Autorização SSH falhou."
+              empty: "Necessário o preenchimento deste campo."
+        virtual_server:
+          attributes:
+            ip_address:
+              invalid: "Endereço IP incorreto."
+              taken: "Endereço IP já foi designado para outro servidor"
+              not_found_in_pool: "Endereço IP não está disponível na RANGE (POOL) informada."
+            identity:
+              taken: "Esta identificação (id) já foi designada para outro servidor."
+            password:
+              confirmation: "A senha e a confirmação não são iguais"
+            nameserver:
+              invalid: "Endereço IP do DNS é inválido."
+            host_name:
+              invalid: "Nome do host inválido."
+            search_domain:
+              invalid: "Domínio de busca inválido."
+            description:
+              invalid: "Descrição contém caracteres inválidos."
+        server_template:
+          attributes:
+            name:
+              taken: "O nome atraibuido para este template já existe."
+        role:
+          attributes:
+            name:
+              taken: "Regra com este nome já existe."
+        ip_pool:
+          attributes:
+            first_ip:
+              invalid: "Endereço IP incorreto."
+              bad_range: "Range de endereço IP incorreto."
+            last_ip:
+              invalid: "Endereço IP incorreto."
+  api:
+    error:
+      access_denied: "Acesso negado."
+      object_not_found: "Objeto não encontrado."
+      unknown_error: "Erro desconhecido."
+      internal_error: "Erro interno."
+  about:
+    copyright: "Copyright 2008-2013 SoftUnity."
+    right_reserved: "Todos os direitos reservados."
+    about_program: "Sobre o programa"
+    author: "Desenvolvedores"
+    contributors: "Colaboradores"
+    contributors_list: "lista"
+    web_site: "Página Web"
+  login:
+    page_title: "Login"
+    window_title: "Entrar utilizando o {{product}}"
+    username: "Usuário"
+    password: "Senha"
+    remember_me: "Lembre-me"
+    button_login: "Acessar"
+    button_restore_password: "Recuperar senha"
+    locale: "Idioma"
+    bad_login: "Usuário ou senha inválido."
+    locked_user: "Usuário bloqueado."
+  restore_password:
+    page_title: "Recuperação de senha"
+    window_title: "Recuperação de senha"
+    username: "Nome de usuário"
+    button_restore: "Recuperar"
+    restore_link_sent: "E-mail para recuperação de senha enviado."
+    error:
+      user_not_found: "Usuário não encontrado."
+      no_email: "Impossível recuperar senha, usuário não possui e-mail."
+    mail:
+      restore_link:
+        subject: "Recuperação de senha"
+        body: "Para recuperar sua senha siga o link: {{link}}"
+  reset_password:
+    page_title: "Resetar Senha"
+    window_title: "Resetar Senha"
+    new_password: "Nova Senha"
+    confirm_password: "Confirme a Senha"
+    password_changed: "Senha modificada."
+  admin:
+    menu:
+      title: "Menu"
+      general:
+        title: "Principal"
+        dashboard: "Painel"
+        hardware_servers: "Servidores Físicos"
+        ip_addresses: "Endereço IP"
+        virtual_servers: "Servidores Virtuais"
+        my_profile: "Meu perfil"
+        users: "Usuários"
+        requests: "Requisições"
+        tasks: "Tarefas"
+        event_log: "Log de eventos"
+        logout: "Sair"
+      help:
+        title: "Ajuda"
+        documentation: "Documentação"
+        support: "Suporte"
+    operations:
+      up_level: "Nível acima"
+      search: "Pesquisar"
+    logout: "Tem certeza que deseja sair do sistema?"
+    search:
+      form:
+        title: "Pesquisa"
+        field:
+          query: "Query"
+        button:
+          search: "Pesquisar"
+    my_profile:
+      title: "Meu perfil"
+      user_name: "Usuário"
+      current_password: "Senha atual"
+      new_password: "Nova senha"
+      confirm_password: "Confirme a nova senha"
+      bad_current_password: "Senha atual inválida."
+      contact_name: "Nome de contato"
+      email: "E-mail"
+    events:
+      internal_error: "Erro interno: {{message}}"
+      hardware_server:
+        connect: "Servidor físico {{host}} foi conectado."
+        disconnect: "Servidor físico {{host}} foi desconectado."
+        sync: "Servidores {{host}} estão sinconizados."
+        sync_failed: "Falha ao sincronizar o estado do host {{host}}."
+        reboot: "Reinicializando o servidor {{host}}."
+      virtual_server:
+        created: "Servidor virtual {{identity}} foi criado."
+        removed: "Servidor virtual {{identity}} foi removido."
+        change_state_failed: "Falha ao tentar mudar o stado do servidor virtual {{identity}}; stado: {{state}}; code: {{code}}."
+        updated: "Condigurações do servidor virtual {{identity}} foram atualizadas."
+        cloned: "Servidor virtual {{identity}} foi clonado."
+        counter_reached: "Limite {{name}} atingido no servidor virtual {{identity}} no servidor físico {{host}}."
+      user:
+        login:
+          ok: "Usuário {{login}} está logado."
+          bad_password: "Usuário {{login}} não digitou a senha correta."
+          bad_login: "tentativa de acesso com nome de usuário desconhecido."
+          locked_user: "Usuário bloqueado {{login}} tentou realizar acesso."
+        logout: "Usuário {{login}} desconectado."
+        removed: "Usuário {{login}} removido."
+        enabled: "Usuário {{login}} habilitado."
+        disabled: "Usuário {{login}} desabilitado."
+        created: "Usuário {{login}} criado."
+        updated: "Usuário {{login}} atualizado."
+        profile_updated: "Perfil do usuário {{login}} atualizado."
+      role:
+        removed: "Regra {{name}} removida."
+        created: "Regra {{name}} criada."
+        updated: "Regra {{name}} atualizada."
+      request:
+        created: "Request #{{id}} criada."
+        updated: "Request #{{id}} atualizada."
+        removed: "Request #{{id}} removida."
+      comment:
+        created: "Comentário  para requisição #{{request_id}} criado."
+    tasks:
+      os_templates:
+        install: "Instalação de template no servidor {{host}}."
+      backups:
+        create: "Backup do servidor virtual #{{identity}} no servidor físico {{host}}."
+        restore: "Restaurar servidor virtual #{{identity}} no servidor físico {{host}}."
+    dashboard:
+      title: "Painel"
+      intro:
+        title: "Introdução"
+        text: "OpenVZ Web Panel é um interface WEB desenvolvida para controlar servidores físicos que utilizam a tecnologia/software de virtualização OpenVZ."
+      profile:
+        title: "Perfil"
+        text: "Você está logado como {{login}}."
+      updates:
+        text: "Está disponível uma nova versão: {{product}}."
+        update_command: "Para realizar a atualização, é necessário executar os seguintes comandos: {{command}}"
+      stats_grid:
+        title: "Estatísticas"
+        column:
+          parameter: "Parâmetros"
+          value: "Quantidade"
+        parameter:
+          panel_users: "Usuários"
+          hardware_servers: "Servidores físicos"
+          virtual_servers: "Servidores virtuais"
+          virtual_servers_running: "Servidores virtuais - rodando"
+          virtual_servers_stopped: "Servidores virtuais - parados"
+          virtual_servers_expired: "Servidores virtuais - expirados"
+          opened_requests: "Requisições abertas"
+    hardware_servers:
+      title: "Servidores físicos"
+      grid:
+        title: "Lista de servidores físicos"
+        column:
+          host_name: "Nome do host"
+          description: "Descrição"
+          virtual_servers: "Servidores virtuais"
+        button:
+          connect: "Conectar a um novo servidor"
+          reconnect: "Reconectar ao servidor"
+          disconnect: "Desconectar do servidor"   
+          details: "Detalhes" 
+          sync: "Sincronização"
+          edit: "Alterar configurações"
+          reboot: "Reiniciar"
+      form:
+        connect_server:
+          title: "Conectar a um novo servidor físico"
+          edit_title: "Alterar configurações do servidor físico"
+          button_connect: "Conectar"
+          field:
+            host_name: "Nome do host"
+            auth_key: "Chave de autorização"
+            description: "Descrição"
+            daemon_port: "Porta de conexão"
+            root_password: "Senha do  usuário root"
+            use_ssl: "Usar SSL"
+          fieldset:
+            additional_settings: "Configurações adicionais"
+        disconnect_server:
+          sure_to_disconnect: "Tem certeza que deseja desconectar do servidor selecionado?"
+          deletion_failed: "Falha ao desconectar do servidor."
+        sync:
+          sync_failed: "Não foi possível sincronizar as informações de alguns servidores físicos."
+        reboot_server:
+          sure_to_reboot: "Os servidores selecionados estarão indisponíveis durante a reinicialização. Tem certeza que deseja reiniciar?"
+          reboot_failed: "Não foi possível iniciar/reiniciar alguns servidores."
+      show:
+        title: "Servidor físico {{name}}"
+      top_toolbar:
+        os_templates: "Template de sistema operacional"
+        server_templates: "Template de servidor"
+      stats:
+        title: "Estatísticas do servidor físico"
+        column:
+          parameter: "Parâmetro"
+          value: "Descrição"
+        field:
+          os_version: "Versão do SO"
+          cpu_load_average: "Uso do CPU"
+          disk_usage: "Uso do disco, partição {{partition}}"
+          memory_usage: "Uso da memória"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} Livre"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} Livre"
+    virtual_servers:
+      title: "Servidores virtuais"
+      limits:
+        unlimited: "Ilimitado"
+      grid:
+        title: "Lista de servidores virtuais"
+        column:
+          state: "Estado"
+          identity: "VEID"
+          ip_address: "Endereço IP"
+          host_name: "Nome do host"
+          os_template: "Template do SO"
+          memory: "Memória, Mb"
+          diskspace: "Espaço em disco, Mb"
+          expiration_date: "Data de expiração"
+          owner: "Responsável"
+          description: "Descrição"
+        button:
+          create: "Criar novo servidor virtual"
+          destroy: "Remover servidor virtual"
+          change_state: "Alterar estado"
+          start: "Ligar"
+          restart: "Reiniciar"
+          stop: "Parar"
+          edit: "Editar configurações"
+          limits: "Limites"
+          reinstall: "Re-instalar"
+          clone: "Clone"
+          change_settings: "Alterar configurações"
+          console: "Terminal"
+          backup: "Backup"
+          tools: "Ferramentas"
+          migrate: "Migração"
+          create_template: "Criar template"
+      form:
+        change_settings:
+          title: "Alterar configurações do servidor virtual"
+        reinstall:
+          title: "Re-instalar servidor virtual"
+          button:
+            reinstall: "Re-instalar"
+        change_state:
+          failed: "Não foi possível alterar o estado do servidor virtual"
+        remove_server:
+          sure_to_remove: "Você tem certeza que deseja remover o servidor virtual selecionado?"
+          deletion_failed: "Não foi possível remover alguns servidores virtuais."
+        create_server:
+          title: "Criar novo servidor virtual"
+          edit_title: "Alterar configurações do servidor virtual"
+          button_create: "Criar"
+          field:
+            identity: "ID do servidor (VEID)"
+            os_template: "Template do SO"
+            select_os_template: "Selecione o template do SO"
+            ip_address: "Endereço IP"
+            host_name: "Nome do host"
+            password: "Senha de Root"
+            confirm_password: "Confirme a senha"
+            start_on_boot: "Iniciar no boot"
+            start_after_creation: "Iniciar após a criação"
+            nameserver: "Servidor DNS"
+            search_domain: "Domínio de pesquisa"
+            diskspace: "Espaço em disco, Mb"
+            memory: "Memória RAM, Mb"
+            status: "Status"
+            owner: "Responsável"
+            select_owner: "Selecione o responsável"
+            no_owner: "Sem responsável"
+            server_template: "Template do servidor"
+            select_server_template: "Selecione o template do servidor"
+            description: "Descrição"
+            cpu_units: "Unidades de CPU"
+            cpus: "Quantidade de processadores"
+            cpu_limit: "Uso da CPU, %"
+            expiration_date: "Data de expiração"
+          fieldset:
+            general: "Principal"
+            network: "Rede"
+            system_access: "Acesso ao sistema"
+            start_options: "Opções de inicialização"
+            dns_settings: "Configurações de DNS"
+            limits: "Limites"
+          tab:
+            main_settings: "Configurações básicas"
+            additional_settings: "Configurações adicionais"
+        create_template:
+          title: "Criar template baseado no servidor virtual"
+          button_create: "Criar"
+          field:
+            name: "Nome"
+          error:
+            invalid_name: "Somente números e caracteres simples são permitidos."
+            template_exists: "Template de OS com este nome já existe."
+        limits:
+          title: "Limites"
+          grid:
+            column:
+              name: "Nome"
+              soft_limit: "Barreira"
+              hard_limit: "Limite"
+        console:
+          title: "Terminal"
+          error:
+            code: "Código retornado:"
+            output: "Saída:"
+          field:
+            command: "Comando"
+          button:
+            run: "Executar"
+        clone:
+          title: "Clonar servidor virtual"
+        migrate:
+          title: "Migrar servidor virtual"
+          field:
+            target: "Servidor destino"
+          button_migrate: "Migrar"
+          note: "Antes da migração, é necessário a criação de uma chave pública para o usuário root no servidor físico de origem e copiar esta chave para o servidor físico de destino. Também é necessário verificar se o utilitário rsync esta instalado no servidor de destino."
+      show:
+        title: "Servidor virtual {{name}}"
+        grid:
+          title: "Informações do servidor virtual"
+          column:
+            parameter: "Parâmetros"
+            value: "valor"
+      stats:
+        title: "Estatísticas do servidor virtual"
+        field:
+          cpu_load_average: "Uso do CPU"
+          disk_usage: "Uso do disco"
+          memory_usage: "Uso da memória"
+        value:
+          disk_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
+          memory_usage: "{{percent}}%, {{used}} de {{total}} / {{free}} livre"
+        button:
+          stat_details: "Detalhes"
+      stat_details:
+        title: "Estatísticas do servidor virtual {{name}}"
+        grid:
+          title: "Limites do servidor virtual"
+          column:
+            parameter: "Parâmetros"
+            current: "Utilização atual"
+            max: "Utilização máxima"
+            barrier: "Barreira"
+            limit: "Limite"
+            failcnt: "Falhas"
+        chart:
+          cpu_usage:
+            title: "Uso de CPU"
+          ram_usage:
+            title: "Uso de memória RAM"
+          disk_usage:
+            title: "Uso de disco"
+    os_templates:
+      title: "Template de SO disponíveis em{{name}}"
+      grid:
+        title: "Templates de SO disponíveis"
+        column:
+          name: "Nome"
+          size: "Tamanho, Mb"
+          virtual_servers: "Seridores"
+        button:
+          install_new_template: "Instalar novo template de SO"
+          remove: "Remover template"
+      form:
+        install:
+          title: "Instalação de novo template de SO"
+          tab:
+            official: "Oficial"
+            contributed: "Contribuição"
+            url: "URL"
+          button_install: "Instalar"
+          load_failed: "Falha ao listar os templates de SO disponíveis."
+          failed: "Falha ao instalar o template de SO."
+          scheduled: "Instalação do template de SO foi agendada. Novos templates poderão surgir durante este tempo."
+          field:
+            url: "Template URL"
+          invalid_url: "Enter valid URL for OS template archive."
+        remove_template:
+          sure_to_remove: "Você tem certeza que deseja remover este template de SO?"
+          deletion_failed: "Não foi possível remover este template"
+    event_log:
+      title: "Log de eventos"
+      grid:
+        title: "Últimos eventos"
+        column:
+          level: "Status"
+          created_at: "Data"
+          ip_address: "Endereço IP"
+          message: "Mensagem"
+          id: "ID"
+        button:
+          clear: "Limpar LOG"
+      form:
+        clear:
+          sure_to_clear: "Você tem certeza que deseja remover todos os registros?"
+          clear_failed: "Não foi possível remover os logs"
+    users:
+      role:
+        infrastructure_admin: "Administrador de infra-estrutura"
+        virtual_server_owner: "Responsável por servidores virtuais"
+      title: "Usuários"
+      top_toolbar:
+        roles: "Regras"
+      grid:
+        title: "Lista de usuários"
+        column:
+          enabled: "State"
+          login: "Login"
+          created_at: "Data de criação"
+          role: "Permissão"
+          contact_name: "Nome do contato"
+          email: "E-mail"
+        button:
+          add: "Adicionar usuário"
+          remove: "Remover usuário"
+          edit: "Editar usuário"
+          enable: "Habilitado"
+          disable: "Desabilitado"
+      form:
+        remove_user:
+          sure_to_remove: "Você tem certeza que deseja remover os usuários selecionados?"
+          deletion_failed: "Não foi possível remover alguns usuários."
+        create:
+          title: "Criar novo usuário"
+          edit_title: "Editar usuário"
+          button_create: "Criar"
+          field:
+            login: "Login"
+            password: "Senha"
+            confirm_password: "Confirme a senha"
+            role: "Permissão"
+            select_role: "Selecione a permissão"
+            contact_name: "Nome do contato"
+            email: "E-mail"
+    task:
+      title: "Tarefas"
+      grid:
+        title: "Lista de tarefas"
+        column:
+          status: "Status"
+          id: "ID"
+          description: "Descrição"
+    server_templates:
+      title: "Templates no Servidor físico {{name}}"
+      grid:
+        title: "Templates disponíveis no servidor"
+        column:
+          name: "Nome"
+          template_default: "Padrão"
+          virtual_servers: "Servidores"
+        button:
+          add: "Adicionar template"
+          remove: "Remover template"
+          edit: "Alterar tempalte"
+      form:
+        remove_template:
+          sure_to_remove: "Você tem certeza que deseja remover os templates selecionados?"
+          deletion_failed: "Não foi possível remover alguns templates"
+        create_server:
+          title: "Criar um novo template de servidor"
+          edit_title: "Editar o template de servidor"
+          button_create: "Criar"
+          tab:
+            main_settings: "Principais configurações"
+            advanced_settings: "Configurações avançadas"
+          fieldset:
+            general: "Principais"
+            limits: "Limites"
+            dns_settings: "Servidor DNS"
+            start_options: "Opções de início"
+          field:
+            name: "Nome"
+            diskspace: "Espaço em disco, Mb"
+            memory: "Memória, Mb"
+            start_on_boot: "Iníciar no boot"
+            nameserver: "Servidor DNS"
+            search_domain: "Domínio de pesquisa"
+            cpu_units: "Quantidade de CPUs"
+            cpus: "Quantidade de Processadores"
+            cpu_limit: "Uso da CPU, %"
+          grid:
+            column:
+              name: "Nome"
+              soft_limit: "Barreira"
+              hard_limit: "Limite"
+    backups:
+      title: "Backups do servidor virtual {{name}}"
+      grid:
+        title: "Backups"
+        button:
+          create: "Backup"
+          restore: "Restaurar"
+          destroy: "Apagar"
+        column:
+          archive_date: "Data"
+          description: "Descrição"
+          size: "Tamanho, Mb"
+      form:
+        remove_backup:
+          sure_to_remove: "Tem certeza que deseja remover os backups selecionados?"
+          deletion_failed: "Não foi possível remover alguns backups."
+        create:
+          title: "Criar novo backup"
+          scheduled: "Procedimento do backup iniciado e poderá levar alguns minutos para finalizar."
+          limit_reached: "Limite máximo de backups atingido."
+          field:
+            description: "Descrição"
+            ve_state:
+              title: "Estado do servidor"
+              suspend: "suspender (recomendado)"
+              stop: "parar"
+              live: "continuar rodando"
+          button_create: "Criar"
+        restore:
+          sure_to_restore: "Tem certeza que deseja restaurar o backup selecionado? O servidor poderá ficar indisponível durante a restauração."
+          failed: "Procedimento de restauração falhou."
+          scheduled: "Procedimento de restauração iniciado e poderá levar alguns minutos para finalizar."
+    requests:
+      title: "Requisições"
+      grid:
+        title: "Lista de requisições"
+        column:
+          opened: "Estado"
+          id: "ID"
+          subject: "Assuntos"
+          replies: "Respostas"
+          author: "Autor"
+          updated_at: "Data da atualização"
+        button:
+          add: "Criar requisição"
+          remove: "Remover requisição"
+          details: "Detalhes"
+          solve: "Fechar requisição"
+          reopen: "Reabrir requisição"
+      form:
+        remove_request:
+          sure_to_remove: "Tem certeza que deseja apagar as requisições selecionadas?"
+          deletion_failed: "Não foi possível apagar algumas requisições"
+        create:
+          title: "Criar requisição"
+          button_create: "Criar"
+          field:
+            subject: "Assunto"
+            content: "Mensagem"
+      comments:
+        title: "Requisição número #{{id}}"
+        grid:
+          title: "Comentários"
+          column:
+            created_at: "Data"
+            author: "Autor"
+            content: "Mensagem"
+          button:
+            add: "Adicionar comentário"
+        form:
+          add:
+            title: "Adicionar comentário"
+            button_add: "Adicionar"
+            field:
+              content: "Mensagem"
+      mail:
+        new_request:
+          subject: "Nova requisição #{{id}}"
+          body: "Nova requisição código #{{id}} criada pelo usuário {{login}}."
+        new_comment:
+          subject: "Novo comentário na requisição de código #{{request_id}}"
+          body: "Novo comentário na requisição de código #{{request_id}} foi adicionada pelo usuário {{login}}."
+    roles:
+      title: "Regras"
+      grid:
+        title: "Lista de regras"
+        column:
+          name: "Nome"
+          users: "Usuários"
+        button:
+          add: "Adicionar regra"
+          remove: "Remover regra"
+          edit: "Editar regra"
+      form:
+        remove_role:
+          sure_to_remove: "Tem certeza que deseja apagar as regras selecionadas?"
+          deletion_failed: "Não foi possível excluir algumas regras. Regras atribuídas a usuários não podem ser excluidas."
+        create:
+          title: "Criar regra"
+          edit_title: "Editar regra"
+          field:
+            name: "Nome"
+          fieldset:
+            permissions: "Permissão"
+            limits: "Limites"
+          button_create: "Criar"
+          permissions:
+            manage_hardware_servers: "Gerenciamento de servidores físicos"
+            use_ve_console: "Console do servidor virtual"
+            backup_ve: "Backup do servidor virtual"
+            reinstall_ve: "Reinstalar servidor virtual"
+            handle_requests: "Tratamento de requisições"
+            create_requests: "Criação de requisições"
+            view_tasks: "Lista de tarefas"
+            view_logs: "Lista de log de eventos"
+            manage_logs: "Gerenciamento de log de eventos"
+            manage_users: "Gerenciamento de usuários"
+            select_os_on_reinstall: "Seleção de SO para reinstalação"
+          limits:
+            unlimited: "Ilimitado"
+            limit_backups: "Número de backups"
+    ip_addresses:
+      title: "Endereço IP"
+      grid:
+        title: "Lista de endereços IP"
+        column:
+          name: "Endereço IP"
+          virtual_server: "Servidor Virtual"
+          hardware_server: "Servidor Físico"
+    ip_pools:
+      grid:
+        title: "Range (Pool) de endereços IP"
+        column:
+          first_ip: "Primeiro endereço IP"
+          last_ip: "Último endereço IP"
+          free_ips: "Endereços IP livres"
+          used_ips: "Endereços IP utilizados"
+          total_ips: "Total de endereços IP"
+          server: "Servidor"
+        button:
+          create: "Criar range (pool) de endereços IP"
+          destroy: "Remover range (pool) de endereços IP"
+          edit: "Editar range (pool) de endereços IP"
+      form:
+        remove_pool:
+          sure_to_remove: "Você tem certeza que deseja remover essa range (pool) de endereços IP?"
+          deletion_failed: "Não foi possível remover algumas range (pool) de endereços IP."
+        create:
+          title: "Criar nova range (pool) de endereços IP"
+          edit_title: "Editar range (pool) de endereços IP"
+          field:
+            first_ip: "Pirmeiro endereço IP"
+            last_ip: "Último endereço IP"
+            limit_server: "Servidor"
+            all_servers: "Todos"
+          button_create: "Criar"

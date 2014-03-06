@@ -1,0 +1,33 @@
+<form action="<%= url_for :controller => 'users', :action => 'profile' %>" method="post">
+  <fieldset>
+    <ul class="pageitem">
+      <li class="smallfield textfield">
+        <span class="name"><%= h(t('admin.my_profile.user_name')) %></span>
+        <span class="value"><%= h(@current_user.login) %></span>
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.current_password')) %></span>
+        <input name="current_password" type="password" />
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.new_password')) %></span>
+        <input name="password" type="password" />
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.confirm_password')) %></span>
+        <input name="password_confirmation" type="password" />
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.contact_name')) %></span>
+        <input name="contact_name" type="text" value="<%= h(@current_user.contact_name) %>"/>
+      </li>
+      <li class="smallfield">
+        <span class="name"><%= h(t('admin.my_profile.email')) %></span>
+        <input name="email" type="text" value="<%= h(@current_user.email) %>"/>
+      </li>
+      <li class="button">
+        <input name="submit" type="submit" value="<%= h(t('form.button.save')) %>" />
+      </li>
+    </ul>
+  </fieldset>
+</form>

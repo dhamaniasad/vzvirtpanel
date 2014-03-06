@@ -1,0 +1,17 @@
+<ul class="pageitem">
+  <% @events.each do |event| %>
+    <li class="textbox">
+      <span class="header">
+        <%
+          icon = 'exclamation.png'
+          icon = 'bug.png' if 0 == event.level
+          icon = 'information.png' if 1 == event.level
+        %>
+        <%= image_tag icon, :class => 'inline' %>
+        #<%= h(event.id) %> - <%= h(local_datetime(event.created_at)) %>
+      </span>
+      <%= event.html_message %><br/>
+      <span class="ip_address"><%= h(event.ip_address) %></span>
+    </li>
+  <% end %>
+</ul>

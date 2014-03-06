@@ -1,0 +1,9 @@
+note:
+  id: 1
+  host: note.lan
+  auth_key: secretkey1
+  
+rock:
+  id: 2
+  host: rock.lan
+  auth_key: secretkey2

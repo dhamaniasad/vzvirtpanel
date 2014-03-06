@@ -1,0 +1,376 @@
+<% @hardware_server = @virtual_server.hardware_server if @virtual_server %>
+<% @os_templates = @hardware_server.os_templates.map { |item| { :id => item.id, :name => item.name, }} %>
+<% @server_templates = @hardware_server.server_templates.map { |item| { :id => item.id, :name => item.name, }} %>
+<% @virtual_servers_owners = User.all.map { |user| { :id => user.id, :login => user.login, }} %>
+<% @virtual_servers_owners << { :id => 0, :login => t('admin.virtual_servers.form.create_server.field.no_owner') } %>
+
+var showVirtualServerEditForm = function(mode, grid, statsGrid) {
+  var osTemplatesStore = new Ext.data.JsonStore({
+    sortInfo: { field: 'name', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'name' }
+    ],
+    data: <%= @os_templates.to_json %>
+  });
+
+  var serverTemplatesStore = new Ext.data.JsonStore({
+    sortInfo: { field: 'name', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'name' }
+    ],
+    data: <%= @server_templates.to_json %>
+  });
+
+  var ownersStore = new Ext.data.JsonStore({
+    sortInfo: { field: 'login', direction: 'ASC' },
+    fields: [
+      { name: 'id' },
+      { name: 'login' }
+    ],
+    data: <%= @virtual_servers_owners.to_json %>
+  });
+
+  var ipAddressesStore = new Ext.data.JsonStore({
+    url: '<%= url_for :controller => 'admin/hardware-servers', :action => 'free_ips_list_data', :id => @hardware_server.id %>' + '&mode=' + mode,
+    root: 'data',
+    autoLoad: true,
+    fields: [
+      { name: 'address' }
+    ]
+  });
+
+  var formEditVirtualServer = new Owp.form.BasicForm({
+    labelWidth: 180,
+    waitMsgTarget: !Ext.isGecko,
+    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'create', :hardware_server_id => @hardware_server.id %>',
+    autoHeight: true,
+    keys: [{
+      key: Ext.EventObject.ENTER,
+      fn: function() {
+        windowEditVirtualServer.submitButton.handler();
+      }
+    }],
+    items: [{
+      name: 'id',
+      xtype: 'hidden'
+    }, {
+      xtype: 'tabpanel',
+      activeTab: 0,
+      baseCls: 'x-plain',
+      plain: true,
+      deferredRender: false,
+      defaults: {
+        autoHeight: true,
+        bodyStyle: 'padding: 5px; background-color: transparent'
+      },
+      listeners: {
+        tabchange: function(tabPanel, activePanel) {
+          windowEditVirtualServer.syncSize();
+        }
+      },
+      items: [{
+        title: '<%= tjs('admin.virtual_servers.form.create_server.tab.main_settings') %>',
+        layout: 'form',
+        items: [{
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.general') %>',
+          autoHeight: true,
+          defaults: { width: 155 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.identity') %>',
+            name: 'identity',
+            xtype: ('add' == mode) ? 'numberfield' : 'displayfield'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.os_template') %>',
+            xtype: ('add' == mode) ? 'combo' : 'displayfield',
+            resizable: true,
+            hiddenName: 'orig_os_template',
+            valueField: 'name',
+            displayField: 'name',
+            name: 'orig_os_template',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_os_template') %>',
+            mode: 'local',
+            allowBlank: false,
+            editable: false,
+            readOnly: ('edit' == mode),
+            store: osTemplatesStore
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.server_template') %>',
+            xtype: 'combo',
+            resizable: true,
+            hiddenName: 'orig_server_template',
+            valueField: 'name',
+            displayField: 'name',
+            name: 'orig_server_template',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_server_template') %>',
+            mode: 'local',
+            allowBlank: false,
+            editable: false,
+            store: serverTemplatesStore,
+            listeners: {
+              select: function(combo, record) {
+                if ('add' == mode) {
+                  formEditVirtualServer.getForm().load({
+                    waitMsg: '<%= tjs('form.loading') %>',
+                    success: function(form, action) {
+                      <% if @hardware_server.vswap %>
+                        if (action.result.data.vswap_enabled) {
+                          form.findField('fieldVswap').enable();
+                        } else {
+                          form.findField('fieldVswap').disable();
+                        }
+                      <% end %>
+                      windowEditVirtualServer.focus();
+                    },
+                    url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'load_template' %>',
+                    params: {
+                      id: record.data.id
+                    }
+                  });
+                }
+              }
+            }
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.description') %>',
+            name: 'description'
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.network') %>',
+          autoHeight: true,
+          defaults: { width: 155 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.ip_address') %>',
+            xtype: 'combo',
+            resizable: true,
+            valueField: 'address',
+            displayField: 'address',
+            name: 'ip_address',
+            triggerAction: 'all',
+            mode: 'remote',
+            editable: true,
+            store: ipAddressesStore
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.host_name') %>',
+            name: 'host_name'
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.system_access') %>',
+          autoHeight: true,
+          defaults: { width: 155 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.password') %>',
+            name: 'password',
+            inputType: 'password',
+            allowBlank: true
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.confirm_password') %>',
+            name: 'password_confirmation',
+            inputType: 'password',
+            allowBlank: true
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.owner') %>',
+            xtype: 'combo',
+            resizable: true,
+            mode: 'local',
+            editable: false,
+            forceSelection: true,
+            triggerAction: 'all',
+            hiddenName: 'user_id',
+            valueField: 'id',
+            displayField: 'login',
+            name: 'user_id',
+            emptyText: '<%= tjs('admin.virtual_servers.form.create_server.field.select_owner') %>',
+            store: ownersStore
+          }]
+        }]
+      }, {
+        title: '<%= tjs('admin.virtual_servers.form.create_server.tab.additional_settings') %>',
+        layout: 'form',
+        autoHeight: true,
+        listeners: {
+          render: function() {
+            if ('add' == mode) {
+              Ext.getCmp('checkboxStartAfterCreation').setValue(true);
+            }
+          }
+        },
+        items: [{
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.limits') %>',
+          autoHeight: true,
+          defaults: { width: 155 },
+          defaultType: 'numberfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.diskspace') %>',
+            id: 'fieldDiskspace',
+            emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
+            name: 'diskspace'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.memory') %>',
+            id: 'fieldMemory',
+            emptyText: '<%= tjs('admin.virtual_servers.limits.unlimited') %>',
+            name: 'memory'
+          <% if @hardware_server.vswap %>
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.vswap') %>',
+            id: 'fieldVswap',
+            name: 'vswap'
+          <% end %>
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_units') %>',
+            id: 'fieldCpuUnits',
+            name: 'cpu_units'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpus') %>',
+            id: 'fieldCpus',
+            name: 'cpus'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.cpu_limit') %>',
+            id: 'fieldCpuLimit',
+            name: 'cpu_limit'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.expiration_date') %>',
+            id: 'fieldExpirationDate',
+            xtype: 'datefield',
+            format: 'Y.m.d',
+            name: 'expiration_date'
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.dns_settings') %>',
+          autoHeight: true,
+          defaults: { width: 155 },
+          defaultType: 'textfield',
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.nameserver') %>',
+            name: 'nameserver'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.search_domain') %>',
+            name: 'search_domain'
+          }]
+        }, {
+          xtype: 'fieldset',
+          title: '<%= tjs('admin.virtual_servers.form.create_server.fieldset.misc') %>',
+          autoHeight: true,
+          defaultType: 'checkbox',
+          labelWidth: 180,
+          items: [{
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_on_boot') %>',
+            xtype: 'checkbox',
+            checked: true,
+            name: 'start_on_boot',
+            id: 'checkboxStartOnBoot'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.start_after_creation') %>',
+            xtype: ('add' == mode) ? 'checkbox' : 'hidden',
+            checked: true,
+            name: 'start_after_creation',
+            id: 'checkboxStartAfterCreation'
+          }, {
+            fieldLabel: '<%= tjs('admin.virtual_servers.form.create_server.field.daily_backup') %>',
+            xtype: 'checkbox',
+            checked: false,
+            name: 'daily_backup',
+            id: 'checkboxDailyBackup'
+          }]
+        }]
+      }]
+    }]
+  });
+
+  var windowEditVirtualServer = new Owp.form.BasicFormWindow({
+    title: ('add' == mode)
+      ? '<%= tjs('admin.virtual_servers.form.create_server.title') %>'
+      : '<%= tjs('admin.virtual_servers.form.create_server.edit_title') %>',
+    iconCls: ('add' == mode) ? 'icon-window-add' : 'icon-window-edit',
+    width: 420,
+    autoHeight: true,
+    modal: true,
+    layout: 'fit',
+    plain: true,
+    border: false,
+    bodyStyle: 'padding: 5px;',
+    resizable: false,
+    items: formEditVirtualServer,
+    buttons: [{
+      text: ('add' == mode)
+        ? '<%= tjs('admin.virtual_servers.form.create_server.button_create') %>'
+        : '<%= tjs('form.button.save') %>',
+      iconCls: ('add' == mode) ? 'icon-button-add' : 'icon-button-save',
+      ref: '../submitButton',
+      handler: function() {
+        formEditVirtualServer.form.submit({
+          waitMsg: '<%= tjs('form.loading') %>',
+          success: function() {
+            grid.store.reload();
+            windowEditVirtualServer.close();
+            grid.getSelectionModel().clearSelections();
+            if (statsGrid) {
+              statsGrid.store.reload();
+            }
+          },
+          failure: function(form, action) {
+            Owp.form.errorHandler(form, action);
+          }
+        });
+      }
+    }, {
+      text: '<%= tjs('form.button.cancel') %>',
+      iconCls: 'icon-button-cancel',
+      handler: function() {
+        windowEditVirtualServer.close();
+      }
+    }]
+  });
+
+  windowEditVirtualServer.on('show', function() {
+    if ('add' == mode) {
+      formEditVirtualServer.getForm().reset();
+
+      var defaultOsTemplate = '<%= @hardware_server.default_os_template %>';
+      var templateField = formEditVirtualServer.getForm().findField('orig_os_template');
+      if (-1 != templateField.getStore().findExact('name', defaultOsTemplate)) {
+        templateField.setValue(defaultOsTemplate);
+      }
+
+      var defaultServerTemplate = '<%= @hardware_server.default_server_template %>';
+      var templateField = formEditVirtualServer.getForm().findField('orig_server_template');
+      if (-1 != templateField.getStore().findExact('name', defaultServerTemplate)) {
+        templateField.setValue(defaultServerTemplate);
+        var templateIndex = templateField.getStore().findExact('name', defaultServerTemplate);
+        var templateRecord = templateField.getStore().getAt(templateIndex);
+        templateField.fireEvent('select', templateField, templateRecord);
+      }
+
+      windowEditVirtualServer.focus();
+    } else {
+      <% if @virtual_server %>
+        var selectedNodeId = <%= @virtual_server.id %>;
+      <% else %>
+        var selectedNodeId = grid.getSelectionModel().getSelected().id;
+      <% end %>
+
+      formEditVirtualServer.getForm().load({
+        waitMsg: '<%= tjs('form.loading') %>',
+        success: function() {
+          windowEditVirtualServer.focus();
+        },
+        url: '<%= url_for :controller => 'admin/virtual-servers', :action => 'load_data' %>?id=' + selectedNodeId
+      });
+      formEditVirtualServer.getForm().findField('id').setValue(selectedNodeId);
+    }
+  });
+
+  windowEditVirtualServer.show();
+}

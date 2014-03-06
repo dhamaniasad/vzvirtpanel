@@ -1,0 +1,118 @@
+<% @page_title = t('admin.event_log.title') %>
+<% @page_icon = 'book.png' %>
+
+<% javascript_tag do -%>
+Ext.onReady(function() {
+
+  function clearLog() {
+    Ext.MessageBox.confirm(
+      '<%= tjs('form.confirmation') %>',
+      '<%= tjs('admin.event_log.form.clear.sure_to_clear') %>',
+      function(button, text) {
+        if ('yes' == button) { 
+          Owp.button.action({
+            gridName: 'eventLogGrid',
+            url: '<%= url_for :controller => 'admin/event-log', :action => 'clear' %>',
+            waitMsg: '<%= tjs('form.performing_task') %>',
+            failure: {
+              title: '<%= tjs('form.error.title') %>',
+              msg: '<%= tjs('admin.event_log.form.clear.clear_failed') %>'
+            }
+          });
+        }
+      }
+    );
+  }
+
+  var store = new Ext.data.JsonStore({
+    url: '<%= url_for :controller => 'admin/event-log', :action => 'list_data' %>',
+    autoLoad: true,
+    data: <%= @events %>,
+    sortInfo: { field: 'id', direction: 'DESC' },
+    fields: [
+      { name: 'id' },
+      { name: 'level' },
+      { name: 'created_at', 'type': 'date', dateFormat: 'c' },
+      { name: 'ip_address' },
+      { name: 'message', mapping: 't_message' }
+    ]
+  });
+
+  var selectionModel = new Ext.grid.RowSelectionModel();
+
+  var eventLogGrid = new Ext.grid.GridPanel({
+    id: 'eventLogGrid',
+    store: store,
+    title: '<%= tjs('admin.event_log.grid.title') %>',
+    loadMask: true,
+    tools: [{ 
+      id: 'refresh',
+      handler: function() {
+        eventLogGrid.getStore().reload();
+      }
+    }],
+    cm: new Ext.grid.ColumnModel([
+      {
+        id: 'level',
+        header: '<%= tjs('admin.event_log.grid.column.level') %>',
+        width: 50,
+        renderer: function(level, metadata, record) {
+          var icon = "exclamation.png";
+          
+          if (0 == level) {
+            icon = "bug.png";
+          } else if (1 == level) {
+            icon = "information.png";
+          } else if (2 == level) {
+            icon = "error.png";
+          }
+          
+          return '<img src="' + BASE_URL + '/images/' + icon + '"/>';
+        },
+        align: 'center',
+        sortable: true,
+        dataIndex: 'level'
+      }, { 
+        id: 'id',
+        header: '<%= tjs('admin.event_log.grid.column.id') %>',
+        width: 50,
+        sortable: true,
+        dataIndex: 'id'
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.event_log.grid.column.created_at') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'created_at',
+        renderer: Ext.list.dateTimeRenderer
+      }, {
+        id: 'created_at',
+        header: '<%= tjs('admin.event_log.grid.column.ip_address') %>',
+        width: 130,
+        sortable: true,
+        dataIndex: 'ip_address'
+      }, { 
+        id: 'message',
+        header: '<%= tjs('admin.event_log.grid.column.message') %>',
+        sortable: true,
+        dataIndex: 'message'
+      }
+    ]),
+    sm: selectionModel,
+    stripeRows: true,
+    autoExpandColumn: 'message',
+    autoWidth: true,
+    stripeRows: true,
+    frame: true,
+    iconCls: 'icon-items-list',
+    <% if @current_user.can_manage_logs? %> tbar: [{
+      text: '<%= tjs('admin.event_log.grid.button.clear') %>',
+      handler: clearLog,
+      cls: 'x-btn-text-icon',
+      icon: '<%= image_path 'delete.png' %>'
+    }] <% end -%>
+  });
+  
+  Owp.layout.addToCenter(eventLogGrid);
+});
+<% end -%>

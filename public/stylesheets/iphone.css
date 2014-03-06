@@ -1,0 +1,23 @@
+ul.error {
+  color: #fff;
+  background: #8a1f11 url(../images/cancel.png) 8px 6px no-repeat;
+  padding-left: 18px;
+}
+
+.smallfield .value {
+  float: right;
+  padding: 10px 5px 0 0;
+}
+
+.textfield .name {
+  width: 80%
+}
+
+img.inline {
+  vertical-align: middle;
+}
+
+.ip_address {
+  color: gray;
+  font-size: 12px;
+}
