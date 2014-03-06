@@ -185,7 +185,7 @@ install_product() {
   else
     exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR $DOWNLOAD_URL"
     [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
-    ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
+    ARCHIVE_NAME="$INSTALL_DIR"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
   fi
 
   EXCLUDE_LIST=""
