@@ -49,7 +49,7 @@ module ApplicationHelper
     limit = limit.include?(':') ? limit.split(":").last : limit
     return 0 if ('unlimited' == limit)
 
-    units = /[BKMGP]$/.match(limit.upcase) ? limit[-1,1].upcase : 'P'
+    units = /[BKMGP]$/.match(limit.upcase) ? limit[-1,1].upcase : 'B'
     limit = limit.to_f
 
     case units
