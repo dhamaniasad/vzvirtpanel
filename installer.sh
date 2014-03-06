@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # global variables
-VERSION="0.0.1-rev1"
-DOWNLOAD_URL="https://github.com/dhamaniasad/vzvirtpanel/archive/$VERSION.tar.gz"
+VERSION="2.4"
+DOWNLOAD_URL="http://ovz-web-panel.googlecode.com/files/ovz-web-panel-$VERSION.tgz"
 RUBYGEMS_URL="http://production.cf.rubygems.org/rubygems/rubygems-1.3.5.tgz"
 RUBY_SQLITE3_CMD="ruby -e \"require 'rubygems'\" -e \"require 'sqlite3'\""
 LOG_FILE="/tmp/ovz-web-panel.log"
@@ -185,7 +185,7 @@ install_product() {
   else
     exec_cmd "Downloading:" "wget -nc -P $INSTALL_DIR $DOWNLOAD_URL"
     [ $? -ne 0 ] && fatal_error "Failed to download distribution." 
-    ARCHIVE_NAME="$INSTALL_DIR"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
+    ARCHIVE_NAME="$INSTALL_DIR/"`echo $DOWNLOAD_URL | sed 's/.\+\///g'`
   fi
 
   EXCLUDE_LIST=""
