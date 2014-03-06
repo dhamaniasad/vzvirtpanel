@@ -39,7 +39,7 @@ and virtual servers with the OpenVZ virtualization technology.
 
 ## 4. Installation
 
-See INSTALL file for installation instructions.
+    wget -O - https://github.com/dhamaniasad/vzvirtpanel/raw/master/installer.sh | sh
 
 
 ## 5. Usage
