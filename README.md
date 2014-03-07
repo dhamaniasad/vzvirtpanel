@@ -1,17 +1,13 @@
 # OpenVZ Web Panel
 
-[![Build Status](https://secure.travis-ci.org/sibprogrammer/owp.png?branch=master)](http://travis-ci.org/sibprogrammer/owp) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/sibprogrammer/owp)
-
-Copyright (c) 2008-2013 SoftUnity, Alexei Yuzhakov <sibprogrammer@gmail.com>
-
 Table of contents:
 
-1. License
-2. Description
-3. Features
-4. Installation
-5. Usage
-6. Additional information
+1. [License](https://github.com/dhamaniasad/vzvirtpanel#1-license)
+2. [Description](https://github.com/dhamaniasad/vzvirtpanel#2-description)
+3. [Features](https://github.com/dhamaniasad/vzvirtpanel#3-features)
+4. [Installation](https://github.com/dhamaniasad/vzvirtpanel#4-installation)
+5. [Usage](https://github.com/dhamaniasad/vzvirtpanel#5-usage)
+6. [Additional information](https://github.com/dhamaniasad/vzvirtpanel#6-additional-information)
 
 
 ## 1. License
@@ -25,7 +21,7 @@ Additional information can be found in LICENSE file.
 OpenVZ Web Panel is a GUI web-based frontend for controlling of the physical 
 and virtual servers with the OpenVZ virtualization technology.
 
-![OpenVZ Web Panel](https://ovz-web-panel.googlecode.com/svn/wiki/images/promo.png)
+![OpenVZ Web Panel](http://ovz-web-panel.googlecode.com/svn/wiki/images/promo.png)
 
 
 ## 3. Features
