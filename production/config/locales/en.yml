@@ -85,7 +85,6 @@ en:
       unknown_error: "Unknown error."
       internal_error: "Internal error."
   about:
-    copyright: ""
     right_reserved: ""
     about_program: "About program"
     author: "Main developer"
