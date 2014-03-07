@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # global variables
-VERSION="2.4.1"
+VERSION="2.4.2"
 DOWNLOAD_URL="https://github.com/dhamaniasad/vzvirtpanel/archive/$VERSION.tar.gz"
 RUBYGEMS_URL="http://production.cf.rubygems.org/rubygems/rubygems-1.3.5.tgz"
 RUBY_SQLITE3_CMD="ruby -e \"require 'rubygems'\" -e \"require 'sqlite3'\""
