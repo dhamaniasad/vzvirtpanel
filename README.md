@@ -1,4 +1,4 @@
-# OpenVZ Web Panel
+# VZVirtPanel
 
 Table of contents:
 
